@@ -12,11 +12,17 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <ctype.h>
+struct ms_type{
+	//int device_id;
+	int report_id;
+	char fieldname[3][100];
+	char fielddata[3][100];
+};
 int Send_init(char* host_addr,int host_port);
-int postServer(int *psocket_id,char* host_addr,char* host_file,int host_port,char *payload,int device_id);
-int getServer(int *psocket_id,char* host_addr,char* host_file,int host_port,char *str);
-int post(char *webaddr,int deviceID,char *message);//public
-int get(char *webaddr,int deviceID,char *message);//public
+int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,int report_id,char senddata[][10]);
+int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,int control_id,char *recv_json);
+int send2server(char *webaddr,int device_id,int report_id,char senddata[][10]);//public
+int receive4server(char *webaddr,int device_id,int control_id,char *recv_json);//public
 void GetHost(char* src, char* web, char* file, int* port);
 
 #endif
