@@ -63,9 +63,21 @@ int ble_read(int ble_fd){
     int flag=1;
     int len=0;
     char str[BLE_SIZE];
+    char tmp[16];
     while(flag||nRet!=0)
     {
-        nRet = read(ble_fd, str+len, BLE_SIZE);
+        nRet = read(ble_fd, tmp, 1);
+        if(tmp[0]>='a'||tmp[0]<='z')
+            nRet=1;
+        else if(tmp[0]>='0'||tmp[0]<='9')
+            nRet=1;
+        else if(tmp[0]>='A'||tmp[0]<='Z')
+            nRet=1;
+        else if(tmp[0]==' ')
+            nRet=1;
+        else
+            continue;
+        str[len]=tmp[0];
         len+=nRet;
         if(-1 == nRet)
         {
@@ -85,6 +97,7 @@ int ble_read(int ble_fd){
             len=0;
             nRet=0;
         }
+        tmp[0]=0;
     }
 }
 
