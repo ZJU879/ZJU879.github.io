@@ -12,8 +12,7 @@ char buf2ble[MAX_BUF_SIZE][BLE_SIZE];
 struct termios stNew;
 struct termios stOld;
 //Open Port & Set Port
-int serial_init_ble()
-{
+int serial_init_ble(){
     ble_fd = open(BLE_DEVICE, O_RDWR|O_NOCTTY|O_NDELAY);
     if(-1 == ble_fd)
     {
@@ -57,8 +56,7 @@ int serial_init_ble()
 }
 
 //return the len of the data
-int ble_read(int ble_fd)
-{
+int ble_read(int ble_fd){
     int nRet=0;
     int flag=1;
     char str[BLE_SIZE];

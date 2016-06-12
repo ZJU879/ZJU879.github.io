@@ -1,13 +1,9 @@
 #include "flagdef.h"
 #include "http.h"
 #include "ble.h"
+#define D_ID_875 15
+#define R_ID_875 7
 
-//blueteeth中断
-//int flag_bt;                        //for controller to check
-/*int head4ble = -1, rear4ble = -1;
-int head2ble = -1, rear2ble = -1;
-char buf4ble[MAXSIZE][BT_SIZE];
-char buf2ble[MAXSIZE][BT_SIZE];*/
 //PLC
 //int flag_plc;                        //for controller to check
 int head4plc = -1, rear4plc = -1;
@@ -21,44 +17,48 @@ int bufID;
 char bufrec[MAXSIZE];       //由主控读取
 //char bufsen[MAXSIZE];      //由发送线程读取
 
-/*  环形缓冲区API
-     对于一个环形缓冲区，rear和head分别指着最新插入和最先插入的位置，初值为-1
-*/
 
-/*
- *   添加数据到缓冲区
- *  参数说明：
- *    buf：      缓冲区名字
- *    data：    插入数据
- *    head：   缓冲区头指针
- *    rear：     缓冲区尾指针
- *    size：     缓冲区大小
- *    返回值：1表示插入成功，0表示满了插入失败
- */
-int writebuf(char **buf, char *data, int *head, int *rear, int size){
-    if(*rear==*head)      return 0;
-    *rear = *rear+1;
-    if(*rear==size)          *rear = 0;
-    strcpy(buf[*rear], data);
-    return 1;
+//face detection
+//device id 15
+//report id 7
+void ble_1_parse(char** res, char* src){
+    res[0][0] = src[0]; res[0][1] = 0;
+    res[1][0] = src[1];
+    res[1][1] = src[2];
+    res[1][2] = src[3];
+    res[1][3] = src[4]; res[1][4] = 0;
+    res[2][0] = src[5];
+    res[2][1] = src[6];
+    res[2][2] = src[7];
+    res[2][3] = src[8];
+    res[2][4] = src[9];
+    res[2][5] = src[10];
+    res[2][6] = src[11];
+    res[2][7] = src[12]; res[2][8] = 0;
+    res[3][0] = src[13]; res[3][1] = 0;
 }
 
-/*
- *   从缓冲区读取数据
- *  参数说明：
- *    buf：      缓冲区名字
- *    data：    读取数据的数组
- *    head：   缓冲区头指针
- *    rear：     缓冲区尾指针
- *    size：     缓冲区大小
- *    返回值：1表示读取成功，0表示满了读取失败（为空，一般来说先检查是否为空再读就好了）
- */
-int readbuf(char **buf, char *data, int *head, int *rear, int size){
-    if(*rear==*head)      return 0;
-    *head = *head+1;
-    if(*head==size)          *head = 0;
-    strcpy(data, buf[*head]);
-    return 1;
+//     air condition
+void ble_2_parse(char** symble, char** res, char* src){
+    strcpy(symble[0], "type");
+    strcpy(symble[1], "temp");
+    strcpy(symble[2], "wet");
+    strcpy(symble[3], "state");
+    strcpy(symble[4], "id");
+    res[0][0] = src[0]; res[0][1] = 0;
+    res[1][0] = src[1];
+    res[1][1] = src[2];
+    res[1][2] = src[3];
+    res[1][3] = src[4];
+    res[1][4] = src[5]; res[1][5] = 0;
+    res[2][0] = src[6];
+    res[2][1] = src[7];
+    res[2][2] = src[8];
+    res[2][3] = src[9];
+    res[2][4] = src[10]; res[2][5] = 0;
+    res[3][0] = src[11]; res[3][1] = 0;
+    res[4][0] = src[12];
+    res[4][1]] = src[13]; res[4][2] = 0;
 }
 
 /*
@@ -70,7 +70,6 @@ int readbuf(char **buf, char *data, int *head, int *rear, int size){
  */
 int getDevID(char *buf, int device_type){
     if(device_type==NET){
-
         return PLC;
         return BLT;
     }
@@ -80,15 +79,15 @@ int getDevID(char *buf, int device_type){
     return ERR;
 }
 
-
-//网络模块初始化，打开发送端口
-void NET_INIT(){
-
-}
-
 void listener(){
+    char recv_json[1024];
+    int device_id = 8;
+    int control_id = 3;
+    char* cu = "http://fat.fatmou.se/api/control";
     while(1){
-        sleep(100);
+      if(receive4server(cu,device_id,control_id,recv_json)){
+          //do something
+      }
     }
 }
 
@@ -98,12 +97,9 @@ void *thread_ble(void *tmp){
         perror("SerialInit Error!\n");
         return;
     }
-
-    ble_read(ble_fd);
-
-    print_buf();
-
-    close(ble_fd);
+    while(1){
+        ble_read(ble_fd);
+    }
     return;
 }
 
@@ -114,18 +110,18 @@ void *thread_plc(void *tmp){
 //主程序
 int main(){
     //Controller Data Structure 控制器数据结构
+    char* server_url = "fat.fatmou.se/api/report";
     char* server = "IP";
     pthread_t th_listen,th_ble,th_plc;
     char buf[DEV_SIZE];
-    int device_id;
+    char res[5][10];
+    int device_id, report_id;
     int device_type;
     //BLE_init();
     printf("%d",BLE_init());
     //PLC_init();
-    //NET_init();
-    //创建监听线程
-    //pthread_create(&th_listen,NULL,listener,0);
     printf("Begin the program\n");
+    pthread_create(&th_listen,NULL,listener,0);
     pthread_create(&th_ble, NULL, thread_ble,0);
     pthread_create(&th_plc, NULL, thread_plc,0);
     printf("Create thread sucessfully\n");
@@ -133,24 +129,19 @@ int main(){
         //Deal with the blueteeth data recieve
         if(get4ble(buf)){
             //Get device ID
-            printf("pengdiandongxi\n");
-            device_id = getDevID(buf,BLT);
+            printf("Data from bluetooth device\n");
+            //875 face detection
+            device_id = D_ID_875;
+            report_id = R_ID_875;
+            ble_1_parse(res,buf);
             printf("%s\n",buf);
-            //readbuf(buf4ble, buf, &head4ble, &rear4ble, BT_SIZE);
-            //Get device ID
-            //device_id = getDevID(buf,BLT);
             //Send data to the server
-            post(server, device_id, buf);
+            if(!send2server(server_url,device_id,report_id,char senddata[][10])){
+                printf("Failed to send to server!\n");
+            }
         }
         //Deal with the HTTP data recieve
         if(flag_rec){
-          //Get device ID and judge type
-          device_type = getDevID(buf,NET);
-          //Send data to the ID
-          switch(device_type){
-              case PLC:   writebuf(buf2plc, bufrec, &head2plc, &rear2plc, PLC_SIZE); break;
-              case BLT:   writebuf(buf2ble,  bufrec, &head2ble,   &rear2ble,  BT_SIZE);   break;
-          }
         }
     }
 }
