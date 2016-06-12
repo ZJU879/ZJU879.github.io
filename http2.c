@@ -34,10 +34,9 @@ int Send_init(char* host_addr,int host_port){//连接服务器，返回是否成
 	server_addr.sin_port = htons(host_port);//
 	//server_addr.sin_addr.s_addr = server_ip;
 	server_addr.sin_addr=*((struct in_addr *)host->h_addr);
-
-	 printf("IP Address: %s\n",inet_ntoa(*((struct in_addr *)host->h_addr)));
-   	// printf( "hostfile:%s\n ", host_file);
-   	 printf( "portnumber: %d\n\n ", host_port);
+	
+	 //printf("IP Address: %s\n",inet_ntoa(*((struct in_addr *)host->h_addr)));
+   	 //printf( "portnumber: %d\n\n ", host_port);
 
 	/* 客户程序发起连接请求*/
 	while(connect(m_socket_id, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0)
@@ -50,17 +49,20 @@ int Send_init(char* host_addr,int host_port){//连接服务器，返回是否成
 }
 
 int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,char data[][20]){//上传数据包到服务器，返回response信息
+	printf("************************************************************\n");
 	int m_socket_id=*psocket_id;
 	/*准备POST request，将要发送给主机*/
 	char request[1024];
 	char message[1024];
 	//sprintf(message,"device_id=%d&report_id=%d",8,report_id);
-	if(device_id==4)
-			sprintf(message,"auth_id=41&auth_key=19e8b1674012fb8c69699c99cf6e2f94&device_id=%d&payload={\"temperature\":\"%s\",\"humidity\":\"%s\",\"state\":\"%s\"}",device_id,data[0],data[1],data[2]);
+	if(device_id==4)//air condidtioner
+		sprintf(message,"{\"auth_id\":41,\"auth_key\":\"19e8b1674012fb8c69699c99cf6e2f94\",\"device_id\":%d,\"payload\":{\"temperature\":\"%s\",\"humidity\":\"%s\",\"state\":\"%s\"}}",device_id,data[0],data[1],data[2]);
+	if(device_id==28)//face detection
+		sprintf(message,"{\"auth_id\":41,\"auth_key\":\"19e8b1674012fb8c69699c99cf6e2f94\",\"device_id\":%d,\"payload\":{\"type\":\"%c\",\"pid\":\"%s\",\"time\":\"%s\",\"result\":\"%c\"}}",device_id,data[0][0],data[1],data[2],data[3][0]);
 
 	int len=strlen(message);
 	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/json\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
-	printf("%s", request);
+	printf("%s", message);
 
 	/* 向server(主机)发送request */
 	int send = 0;int totalsend = 0;
@@ -78,7 +80,7 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 
 	//* 接收server消息 */
 	FILE * fp;
-	fp = fopen("httpfile", "a");
+	fp = fopen("httpreport", "a");
 	if(!fp) {
   	  printf("create file error! %s\n", strerror(errno));
    	 return 0;
@@ -100,11 +102,11 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	      }
 	      //printf("%c", buffer[0]);/*把http头信息打印在屏幕上*/
 	    }
-	    else {
-	      fwrite(buffer, 1, 1, fp);/*将http主体信息写入文件*/
-	      i++;
-	      if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
+	    else {	      
+	      i++;	      
 	    }
+		fwrite(buffer, 1, 1, fp);/*将http信息写入文件*/
+		if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
 	}
 	fclose(fp);
 	//
@@ -118,15 +120,16 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	}
 
 }
-int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,char *recv_json){//获取服务器传递的信息，并存于str，返回0表示无信息
+int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,char *recv_json){//获取服务器传递的信息，并存于str，返回-1表示无信息
+	printf("----------------------------------------------------------------\n");
 	int m_socket_id=*psocket_id;
 	/*准备POST request，将要发送给主机*/
 	char request[1024];
 	char message[1024];
-	sprintf(message,"{\"auth_id\":41,\"auth_key\":\"19e8b1674012fb8c69699c99cf6e2f94\",\"device_id\":%d",device_id);
+	sprintf(message,"{\"auth_id\":41,\"auth_key\":\"19e8b1674012fb8c69699c99cf6e2f94\",\"device_id\":%d}",device_id);
 	int len=strlen(message);
-	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/json\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
-	printf("%s", request);
+	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/Json\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
+	printf("%s", message);
 
 	/* 向server(主机)发送request */
 	int send = 0;int totalsend = 0;
@@ -138,13 +141,13 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 		return -1;
 	  }
   	  totalsend+=ret;
-  	  printf("%d bytes send OK!\n", totalsend);
+  	  printf("\n%d bytes send OK!\n", totalsend);
 	}
 
 
 	//* 接收server消息 */
 	FILE * fp;
-	fp = fopen("httpfile", "a");
+	fp = fopen("httpcontrol", "a");
 	if(!fp) {
   	  printf("create file error! %s\n", strerror(errno));
    	 return 0;
@@ -154,23 +157,24 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	/* 连接成功了，接收http响应，response */
 	char buffer[256];
 	char resHead[256]="";
-	int ii=0;
+	int ii=0;int iii=0;
 	while((nbytes=read(m_socket_id,buffer,1))==1)
 	{
 	    if(i < 4) {
-	      if(buffer[0] == '\r' || buffer[0] == '\n') i++;
-	      else i = 0;
-	      ii++;
-	      if(ii>=10&&ii<=12){
+		if(buffer[0] == '\r' || buffer[0] == '\n') i++;
+		else i = 0;
+		ii++;
+		if(ii>=10&&ii<=12){
 		resHead[ii%10]=buffer[0];
-	      }
-	      //printf("%c", buffer[0]);/*把http头信息打印在屏幕上*/
+		}	      
 	    }
 	    else {
-	      fwrite(buffer, 1, 1, fp);/*将http主体信息写入文件*/
-	      i++;
-	      if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
+		recv_json[iii++]=buffer[0];/*把http主体信息写入recv_json*/
+		//printf("%d,%c  ",iii,buffer[0]);
+		i++;
 	    }
+		fwrite(buffer, 1, 1, fp);/*将http信息写入文件*/
+		if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
 	}
 	fclose(fp);
 	//
@@ -193,42 +197,61 @@ int send2server(char *webaddr,int device_id,char senddata[][20]){
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=report_packet(&m_socket_id,host_addr,host_file, host_port,device_id,senddata);
 	close(m_socket_id);
-	return res;
+	return res;//0 succeed  //-1 failed
 }
-int receive4server(char *webaddr,int device_id,char *recv_json){
+int receive4server(char *webaddr,int device_id,char *ret_msg){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	int host_port=3000;//81;
+	char recv_json[1000];
 	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,recv_json);
+	if(res==0){
+		if(parsejson(recv_json,ret_msg)==0){
+			printf("return message:%s\n",ret_msg);
+		}
+		else{
+			printf("no message return\n");
+			res=-1;
+		}
+	}
 	close(m_socket_id);
-	return res;
+	return res;//0 succeed  //-1 failed
 }
-
-
+int parsejson(char *json,char *ret_msg){
+	int i=0;int res=0;
+	for(i=0;json[i]!='\0';i++){
+		if(json[i]=='c') ret=json[i+6]-'0';
+		if(json[i]=='s')sprintf(ret_msg,"{%c}",json[i+8]);
+	}
+	return ret;//0 have message; -1 no message
+}
 
 
 
 int main(int argc, char *argv[]){
 
 
-	char recv_json[1024];//
+	char ret_msg[1024];//
 	int i;
 
-	//receive4server("http://fat.fatmou.se/api/control",8,3,recv_json);
 	char data[5][20];
-	//data[0][0]='3.52';
-	sprintf(data[0],"3.42");
-	sprintf(data[1],"3.42");
+	//test for air conditioner
+	sprintf(data[0],"3.42");//temperature
+	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
 	data[3][0]='f';
-	for(i=1;i<=1;i++)
-	 receive4server("nya.fatmou.se/api/poll",4,recv_json);
-	 printf("server:%s\n",recv_json);
-		send2server("nya.fatmou.se/api/report",4,data);
-	//send2server("fat.fatmou.se/api/report",15,7,data);
+	send2server("nya.fatmou.se/api/report",4,data);
+	 receive4server("nya.fatmou.se/api/poll",4,ret_msg);	
+	 
+	//test for face detection		
+	data[0][0]='3';
+	sprintf(data[1],"3842");
+	sprintf(data[2],"34:42:65");
+	data[3][0]='0';
+	send2server("nya.fatmou.se/api/report",28,data);
 	return 0;
 }
 /**************************************************************

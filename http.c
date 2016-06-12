@@ -35,8 +35,8 @@ int Send_init(char* host_addr,int host_port){//连接服务器，返回是否成
 	//server_addr.sin_addr.s_addr = server_ip;
 	server_addr.sin_addr=*((struct in_addr *)host->h_addr);
 
+	
 	 //printf("IP Address: %s\n",inet_ntoa(*((struct in_addr *)host->h_addr)));
-   	// printf( "hostfile:%s\n ", host_file);
    	 //printf( "portnumber: %d\n\n ", host_port);
 
 	/* 客户程序发起连接请求*/
@@ -50,12 +50,13 @@ int Send_init(char* host_addr,int host_port){//连接服务器，返回是否成
 }
 
 int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,int report_id,char data[][20]){//上传数据包到服务器，返回response信息
+	printf("************************************************************************\n");
 	int m_socket_id=*psocket_id;
 	/*准备POST request，将要发送给主机*/
 	char request[1024];
 	char message[1024];
-	//sprintf(message,"device_id=%d&report_id=%d",8,report_id);
-	if(report_id==7)
+
+	if(report_id==7)//face detection
 		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\",\"time\":\"%s\",\"result\":\"%c\"}",device_id,report_id,data[0][0],data[1],data[2],data[3][0]);
 	else if(report_id==5)
 		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"abc\":\"4\"}",device_id,report_id);
@@ -69,12 +70,12 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\"}",device_id,report_id,data[0][0],data[1]);
 	else if(report_id==13)
 		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"time\":\"%s\"}",device_id,report_id,data[2]);
-	else if(report_id==21)
+	else if(report_id==21)//air conditioner
 			sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"humidity\":\"%s\",\"temperature\":\"%s\",\"state\":\"%s\"}",device_id,report_id,data[0],data[1],data[2]);
 
 	int len=strlen(message);
 	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
-	printf("%s", request);
+	printf("%s", message);
 
 	/* 向server(主机)发送request */
 	int send = 0;int totalsend = 0;
@@ -92,7 +93,7 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 
 	//* 接收server消息 */
 	FILE * fp;
-	fp = fopen("httpfile", "a");
+	fp = fopen("httpreport", "a");
 	if(!fp) {
   	  printf("create file error! %s\n", strerror(errno));
    	 return 0;
@@ -114,11 +115,11 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	      }
 	      //printf("%c", buffer[0]);/*把http头信息打印在屏幕上*/
 	    }
-	    else {
-	      fwrite(buffer, 1, 1, fp);/*将http主体信息写入文件*/
-	      i++;
-	      if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
+	    else {	      
+	      i++;	      
 	    }
+	    fwrite(buffer, 1, 1, fp);/*将http主体信息写入文件*/
+	    if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
 	}
 	fclose(fp);
 	//
@@ -132,7 +133,8 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	}
 
 }
-int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,int control_id,char *recv_json){//获取服务器传递的信息，并存于str，返回0表示无信息
+int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,int control_id,char *recv_json){//获取服务器传递的信息，并存于str，返回-1表示无信息
+	printf("---------------------------------------------------------------------\n");
 	int m_socket_id=*psocket_id;
 	/*准备POST request，将要发送给主机*/
 	char request[1024];
@@ -140,7 +142,7 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766s&device_id=%d&control_id=%d&sr=R",device_id,control_id);
 	int len=strlen(message);
 	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
-	printf("%s", request);
+	printf("%s", message);
 
 	/* 向server(主机)发送request */
 	int send = 0;int totalsend = 0;
@@ -158,7 +160,7 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 
 	//* 接收server消息 */
 	FILE * fp;
-	fp = fopen("httpfile", "a");
+	fp = fopen("httpcontrol", "a");
 	if(!fp) {
   	  printf("create file error! %s\n", strerror(errno));
    	 return 0;
@@ -168,7 +170,7 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	/* 连接成功了，接收http响应，response */
 	char buffer[256];
 	char resHead[256]="";
-	int ii=0;
+	int ii=0;int iii=0;
 	while((nbytes=read(m_socket_id,buffer,1))==1)
 	{
 	    if(i < 4) {
@@ -178,13 +180,13 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	      if(ii>=10&&ii<=12){
 		resHead[ii%10]=buffer[0];
 	      }
-	      //printf("%c", buffer[0]);/*把http头信息打印在屏幕上*/
 	    }
 	    else {
-	      fwrite(buffer, 1, 1, fp);/*将http主体信息写入文件*/
-	      i++;
-	      if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
+	      recv_json[iii++]=buffer[0];
+	      i++;	      
 	    }
+	    fwrite(buffer, 1, 1, fp);/*将http信息写入文件*/
+	    if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
 	}
 	fclose(fp);
 	//
@@ -193,7 +195,7 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 		printf("succeed:%s\n",resHead);return 0;
 	}
 	else {
-		printf("failed:%s\n",resHead);return -1;
+		printf("no message:%s\n",resHead);return -1;
 
 	}
 
@@ -209,40 +211,59 @@ int send2server(char *webaddr,int device_id,int report_id,char senddata[][20]){
 	close(m_socket_id);
 	return res;
 }
-int receive4server(char *webaddr,int device_id,int control_id,char *recv_json){
+int receive4server(char *webaddr,int device_id,int control_id,char *ret_msg){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
+	char recv_json[200];
 	int host_port=3000;//81;
 	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,control_id,recv_json);
+	if(res==0){
+		parsejson(recv_json,ret_msg);
+		printf("return message:%s\n",ret_msg);
+	}
+	else{
+		printf("no message return\n");
+	}
 	close(m_socket_id);
 	return res;
 }
 
 
+int parsejson(char *json,char *ret_msg){
+	int i=0;
+	for(i=0;json[i]!='\0';i++){
+		if(json[i]=='s')sprintf(ret_msg,"{%c}",json[i+8]);
+	}
+	return 0;//0 have message; -1 no message
+}
 
 
+int main(int argc, char *argv[]){
 
-/*int main(int argc, char *argv[]){
 
-
-	char recv_json[1024];//
+	char ret_msg[1024];//message to send back
 	int i;
 
-	//receive4server("http://fat.fatmou.se/api/control",8,3,recv_json);
+	
 	char data[5][20];
-	//data[0][0]='3.52';
-	sprintf(data[0],"3.42");
-	sprintf(data[1],"3.42");
+	//test for air conditioner  device 23  control id 6  report id 21
+	sprintf(data[0],"3.42");//temperature
+	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
 	data[3][0]='f';
-	for(i=1;i<=1;i++)
-	 receive4server("nya.fatmou.se/api/control",23,6,recv_json);
-	 printf("server:%s\n",recv_json);
-		send2server("fat.fatmou.se/api/report",23,21,data);
-	//send2server("fat.fatmou.se/api/report",15,7,data);
+	send2server("fat.fatmou.se/api/report",23,21,data);
+	 receive4server("fat.fatmou.se/api/control",23,6,ret_msg);	
+	 
+	//test for face detection  device id 15	 report id 7
+	data[0][0]='3';
+	sprintf(data[1],"3842");
+	sprintf(data[2],"34:42:65");
+	data[3][0]='0';
+	send2server("fat.fatmou.se/api/report",15,7,data);
+
 	return 0;
 }
 /**************************************************************
