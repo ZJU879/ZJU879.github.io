@@ -3,6 +3,8 @@
 #include "ble.h"
 #define D_ID_875 15
 #define R_ID_875 7
+#define D_ID_xxx 15
+#define R_ID_xxx 7
 
 //PLC
 //int flag_plc;                        //for controller to check
@@ -61,6 +63,22 @@ void ble_2_parse(char** symble, char** res, char* src){
     res[4][1]] = src[13]; res[4][2] = 0;
 }
 
+//     plc
+void plc_parse char** res, char* src){
+    res[0][0] = src[0]; res[0][1] = 0;
+    res[1][0] = src[1];
+    res[1][1] = src[2];
+    res[1][2] = src[3];
+    res[1][3] = src[4];
+    res[1][4] = src[5];
+    res[1][5] = src[6];
+    res[1][6] = src[7];
+    res[1][7] = src[8];
+    res[1][8] = src[9];
+    res[1][9] = src[10]; res[1][10] = 0
+    res[2][0] = src[11]; res[4][1]] = 0;
+}
+
 /*
  *   从字符串中解析出当前的id编号或者类型
  *  参数说明：
@@ -114,7 +132,7 @@ int main(){
     char* server = "IP";
     pthread_t th_listen,th_ble,th_plc;
     char buf[DEV_SIZE];
-    char res[5][10];
+    char res[5][20];
     int device_id, report_id;
     int device_type;
     //BLE_init();
@@ -136,10 +154,24 @@ int main(){
             ble_1_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-            if(!send2server(server_url,device_id,report_id,char senddata[][10])){
+            if(!send2server(server_url,device_id,report_id,res)){
                 printf("Failed to send to server!\n");
             }
         }
+       //Deal with the plc data recieve
+       /*if(get4plc(buf)){
+          //Get device ID
+          printf("Data from plc device\n");
+          //875 face detection
+          device_id = D_ID_xxx;
+          report_id = R_ID_xxx;
+          plc_parse(res,buf);
+          printf("%s\n",buf);
+          //Send data to the server
+          if(!send2server(server_url,device_id,report_id,char res)){
+              printf("Failed to send to server!\n");
+          }
+        }*/
         //Deal with the HTTP data recieve
         if(flag_rec){
         }
