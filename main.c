@@ -23,7 +23,7 @@ char bufrec[MAXSIZE];       //由主控读取
 //face detection
 //device id 15
 //report id 7
-void ble_1_parse(char** res, char* src){
+void ble_1_parse(char res[][20], char* src){
     res[0][0] = src[0]; res[0][1] = 0;
     res[1][0] = src[1];
     res[1][1] = src[2];
@@ -60,11 +60,11 @@ void ble_2_parse(char** symble, char** res, char* src){
     res[2][4] = src[10]; res[2][5] = 0;
     res[3][0] = src[11]; res[3][1] = 0;
     res[4][0] = src[12];
-    res[4][1]] = src[13]; res[4][2] = 0;
+    res[4][1] = src[13]; res[4][2] = 0;
 }
 
 //     plc
-void plc_parse char** res, char* src){
+void plc_parse (char res[][20], char* src){
     res[0][0] = src[0]; res[0][1] = 0;
     res[1][0] = src[1];
     res[1][1] = src[2];
@@ -75,8 +75,8 @@ void plc_parse char** res, char* src){
     res[1][6] = src[7];
     res[1][7] = src[8];
     res[1][8] = src[9];
-    res[1][9] = src[10]; res[1][10] = 0
-    res[2][0] = src[11]; res[4][1]] = 0;
+    res[1][9] = src[10]; res[1][10] = 0;
+    res[2][0] = src[11]; res[4][1] = 0;
 }
 
 /*
@@ -97,7 +97,7 @@ int getDevID(char *buf, int device_type){
     return ERR;
 }
 
-void listener(){
+void *listener(void *tmp){
     char recv_json[1024];
     int device_id = 8;
     int control_id = 3;
@@ -119,10 +119,6 @@ void *thread_ble(void *tmp){
         ble_read(ble_fd);
     }
     return;
-}
-
-void *thread_plc(void *tmp){
-
 }
 
 //主程序
@@ -158,20 +154,6 @@ int main(){
                 printf("Failed to send to server!\n");
             }
         }
-       //Deal with the plc data recieve
-       /*if(get4plc(buf)){
-          //Get device ID
-          printf("Data from plc device\n");
-          //875 face detection
-          device_id = D_ID_xxx;
-          report_id = R_ID_xxx;
-          plc_parse(res,buf);
-          printf("%s\n",buf);
-          //Send data to the server
-          if(!send2server(server_url,device_id,report_id,char res)){
-              printf("Failed to send to server!\n");
-          }
-        }*/
         //Deal with the HTTP data recieve
         if(flag_rec){
         }
