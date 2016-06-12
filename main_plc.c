@@ -1,11 +1,6 @@
 #include "flagdef.h"
 #include "http.h"
-#include "ble.h"
-#define D_ID_875 15
-#define R_ID_875 7
-#define D_ID_872 23
-#define R_ID_872 21
-#define C_ID_872 6
+#include "plc.h"
 #define D_ID_xxx 15
 #define R_ID_xxx 7
 
@@ -20,7 +15,6 @@ int flag_rec;                        //轮询到数据时置1，由主控制器�
 //int flag_sen;                        //需要发送时置1，由http发送线程检查
 int bufID;
 char bufrec[MAXSIZE];       //由主控读取
-char dt;
 //char bufsen[MAXSIZE];      //由发送线程读取
 
 
@@ -45,7 +39,12 @@ void ble_1_parse(char res[][20], char* src){
 }
 
 //     air condition
-void ble_2_parse(char res[][20], char* src){
+void ble_2_parse(char** symble, char** res, char* src){
+    strcpy(symble[0], "type");
+    strcpy(symble[1], "temp");
+    strcpy(symble[2], "wet");
+    strcpy(symble[3], "state");
+    strcpy(symble[4], "id");
     res[0][0] = src[0]; res[0][1] = 0;
     res[1][0] = src[1];
     res[1][1] = src[2];
@@ -115,10 +114,7 @@ void *thread_ble(void *tmp){
         return;
     }
     while(1){
-      if(dt=='1')
         ble_read(ble_fd);
-      else if(dt=='2')
-        ble_read_872(ble_fd);
     }
     return;
 }
@@ -126,11 +122,12 @@ void *thread_ble(void *tmp){
 //主程序
 int main(int argc, char ** argv){
     //Controller Data Structure 控制器数据结构
-    if(argc!=2&&argv[1][0]!='1'&&argv[1][0]!='2'){
+    if(argc!=2||argv[1][0]!='1'||argv[1][0]!='2'||argv[1][0]!='3'){
         printf("Invalid input!\n");
         return 0;
     }
-    dt = argv[1][0];
+    char dt = argv[1][0];
+    char* server_url = "fat.fatmou.se/api/report";
     char* server = "IP";
     pthread_t th_listen,th_ble,th_plc;
     char buf[DEV_SIZE];
@@ -147,38 +144,18 @@ int main(int argc, char ** argv){
     printf("Create thread sucessfully\n");
     while(1){
         //Deal with the blueteeth data recieve
-      if(dt=='1'){//875
         if(get4ble(buf)){
             //Get device ID
-            printf("Data from 875 bluetooth device\n");
+            printf("Data from plc device\n");
             //875 face detection
-            device_id = D_ID_875;
-            report_id = R_ID_875;
+            device_id = D_ID_xxx;
+            report_id = R_ID_xxx;
             ble_1_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-            if(!send2server("fat.fatmou.se/api/report",device_id,report_id,res)){
+            if(!send2server(server_url,device_id,report_id,res)){
                 printf("Failed to send to server!\n");
             }
         }
-      }
-      if(dt=='2'){//872
-        if(get4ble(buf)){
-            //Get device ID
-            printf("Data from 872 bluetooth device\n");
-            //875 face detection
-            device_id = D_ID_872;
-            report_id = R_ID_872;
-            ble_2_parse(res,buf);
-            printf("%s\n",buf);
-            //Send data to the server
-            if(!send2server("fat.fatmou.se/api/report",device_id,report_id,res)){
-                printf("Failed to send to server!\n");
-            }
-        }
-        //Deal with the HTTP data recieve
-        if(flag_rec){
-        }
-      }
     }
 }

@@ -1,5 +1,5 @@
 
-#include "http.h"
+#include "http2.h"
 int ret;//所接受数据的长度
 
 
@@ -35,9 +35,9 @@ int Send_init(char* host_addr,int host_port){//连接服务器，返回是否成
 	//server_addr.sin_addr.s_addr = server_ip;
 	server_addr.sin_addr=*((struct in_addr *)host->h_addr);
 
-	 //printf("IP Address: %s\n",inet_ntoa(*((struct in_addr *)host->h_addr)));
+	 printf("IP Address: %s\n",inet_ntoa(*((struct in_addr *)host->h_addr)));
    	// printf( "hostfile:%s\n ", host_file);
-   	 //printf( "portnumber: %d\n\n ", host_port);
+   	 printf( "portnumber: %d\n\n ", host_port);
 
 	/* 客户程序发起连接请求*/
 	while(connect(m_socket_id, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0)
@@ -49,31 +49,17 @@ int Send_init(char* host_addr,int host_port){//连接服务器，返回是否成
 	return m_socket_id;
 }
 
-int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,int report_id,char data[][20]){//上传数据包到服务器，返回response信息
+int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,char data[][20]){//上传数据包到服务器，返回response信息
 	int m_socket_id=*psocket_id;
 	/*准备POST request，将要发送给主机*/
 	char request[1024];
 	char message[1024];
 	//sprintf(message,"device_id=%d&report_id=%d",8,report_id);
-	if(report_id==7)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\",\"time\":\"%s\",\"result\":\"%c\"}",device_id,report_id,data[0][0],data[1],data[2],data[3][0]);
-	else if(report_id==5)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"abc\":\"4\"}",device_id,report_id);
-	else if(report_id==9)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\",\"time\":\"%s\"}",device_id,report_id,data[0][0],data[1],data[2]);
-	else if(report_id==10)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\"}",device_id,report_id,data[0][0]);
-	else if(report_id==11)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"pid\":\"%s\"}",device_id,report_id,data[1]);
-	else if(report_id==12)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\"}",device_id,report_id,data[0][0],data[1]);
-	else if(report_id==13)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"time\":\"%s\"}",device_id,report_id,data[2]);
-	else if(report_id==21)
-			sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"humidity\":\"%s\",\"temperature\":\"%s\",\"state\":\"%s\"}",device_id,report_id,data[0],data[1],data[2]);
+	if(device_id==4)
+			sprintf(message,"auth_id=41&auth_key=19e8b1674012fb8c69699c99cf6e2f94&device_id=%d&payload={\"temperature\":\"%s\",\"humidity\":\"%s\",\"state\":\"%s\"}",device_id,data[0],data[1],data[2]);
 
 	int len=strlen(message);
-	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
+	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/json\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
 	printf("%s", request);
 
 	/* 向server(主机)发送request */
@@ -132,14 +118,14 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	}
 
 }
-int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,int control_id,char *recv_json){//获取服务器传递的信息，并存于str，返回0表示无信息
+int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,char *recv_json){//获取服务器传递的信息，并存于str，返回0表示无信息
 	int m_socket_id=*psocket_id;
 	/*准备POST request，将要发送给主机*/
 	char request[1024];
 	char message[1024];
-	sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766s&device_id=%d&control_id=%d&sr=R",device_id,control_id);
+	sprintf(message,"{\"auth_id\":41,\"auth_key\":\"19e8b1674012fb8c69699c99cf6e2f94\",\"device_id\":%d",device_id);
 	int len=strlen(message);
-	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
+	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/json\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
 	printf("%s", request);
 
 	/* 向server(主机)发送request */
@@ -198,25 +184,25 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	}
 
 }
-int send2server(char *webaddr,int device_id,int report_id,char senddata[][20]){
+int send2server(char *webaddr,int device_id,char senddata[][20]){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	int host_port=3000;//81;
 	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
-	int res=report_packet(&m_socket_id,host_addr,host_file, host_port,device_id,report_id,senddata);
+	int res=report_packet(&m_socket_id,host_addr,host_file, host_port,device_id,senddata);
 	close(m_socket_id);
 	return res;
 }
-int receive4server(char *webaddr,int device_id,int control_id,char *recv_json){
+int receive4server(char *webaddr,int device_id,char *recv_json){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	int host_port=3000;//81;
 	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
-	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,control_id,recv_json);
+	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,recv_json);
 	close(m_socket_id);
 	return res;
 }
@@ -225,7 +211,7 @@ int receive4server(char *webaddr,int device_id,int control_id,char *recv_json){
 
 
 
-/*int main(int argc, char *argv[]){
+int main(int argc, char *argv[]){
 
 
 	char recv_json[1024];//
@@ -239,9 +225,9 @@ int receive4server(char *webaddr,int device_id,int control_id,char *recv_json){
 	sprintf(data[2],"7");
 	data[3][0]='f';
 	for(i=1;i<=1;i++)
-	 receive4server("nya.fatmou.se/api/control",23,6,recv_json);
+	 receive4server("nya.fatmou.se/api/poll",4,recv_json);
 	 printf("server:%s\n",recv_json);
-		send2server("fat.fatmou.se/api/report",23,21,data);
+		send2server("nya.fatmou.se/api/report",4,data);
 	//send2server("fat.fatmou.se/api/report",15,7,data);
 	return 0;
 }
