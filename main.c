@@ -6,7 +6,7 @@
 #define D_ID_872 23
 #define R_ID_872 21
 #define C_ID_872 6
-#define D_ID_xxx 15
+#define D_ID_plc 27
 #define R_ID_xxx 7
 
 //PLC
@@ -28,11 +28,11 @@ char dt;
 //device id 15
 //report id 7
 void ble_1_parse(char res[][20], char* src){
-    res[0][0] = src[0]; res[0][1] = 0;
+    res[0][0] = src[0]; res[0][1] = 0;//type
     res[1][0] = src[1];
     res[1][1] = src[2];
     res[1][2] = src[3];
-    res[1][3] = src[4]; res[1][4] = 0;
+    res[1][3] = src[4]; res[1][4] = 0;//pid
     res[2][0] = src[5];
     res[2][1] = src[6];
     res[2][2] = src[7];
@@ -40,8 +40,8 @@ void ble_1_parse(char res[][20], char* src){
     res[2][4] = src[9];
     res[2][5] = src[10];
     res[2][6] = src[11];
-    res[2][7] = src[12]; res[2][8] = 0;
-    res[3][0] = src[13]; res[3][1] = 0;
+    res[2][7] = src[12]; res[2][8] = 0;//time
+    res[3][0] = src[13]; res[3][1] = 0;//result
 }
 
 //     air condition
@@ -57,7 +57,7 @@ void ble_2_parse(char res[][20], char* src){
     res[2][2] = src[8];
     res[2][3] = src[9];
     res[2][4] = src[10]; res[2][5] = 0;
-    res[3][0] = src[11]; res[3][1] = 0;
+    res[3][0] = src[11]; res[3][1] = 0;//state
     res[4][0] = src[12];
     res[4][1] = src[13]; res[4][2] = 0;
 }
@@ -98,11 +98,11 @@ int getDevID(char *buf, int device_type){
 
 void *listener(void *tmp){
     char recv_json[1024];
-    int device_id = 8;
-    int control_id = 3;
-    char* cu = "http://fat.fatmou.se/api/control";
+    int device_id = D_ID_872;
+    int control_id = C_ID_872;
+    //char* cu = "http://fat.fatmou.se/api/control";
     while(1){
-      if(receive4server(cu,device_id,control_id,recv_json)){
+      if(receive4server(device_id,control_id,recv_json)){
           //do something
       }
     }
@@ -157,7 +157,7 @@ int main(int argc, char ** argv){
             ble_1_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-            if(!send2server("fat.fatmou.se/api/report",device_id,report_id,res)){
+            if(!send2server(device_id,report_id,res)){
                 printf("Failed to send to server!\n");
             }
         }
@@ -172,7 +172,7 @@ int main(int argc, char ** argv){
             ble_2_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-            if(!send2server("fat.fatmou.se/api/report",device_id,report_id,res)){
+            if(!send2server(device_id,report_id,res)){
                 printf("Failed to send to server!\n");
             }
         }
