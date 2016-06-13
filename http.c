@@ -200,27 +200,27 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	}
 
 }
-int send2server(char *webaddr,int device_id,int report_id,char senddata[][20]){
+int send2server(int device_id,int report_id,char senddata[][20]){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	int host_port=3000;//81;
-	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
+	GetHost("fat.fatmou.se/api/report", host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=report_packet(&m_socket_id,host_addr,host_file, host_port,device_id,report_id,senddata);
 	close(m_socket_id);
 	return res;
 }
-int receive4server(char *webaddr,int device_id,int control_id,char *ret_msg){
+int receive4server(int device_id,int control_id,char *ret_msg){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	char recv_json[200]="";
 	int host_port=3000;//81;
-	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
+	GetHost("fat.fatmou.se/api/control", host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,control_id,recv_json);
-	printf("recv_json:%s",recv_json);
+	//printf("recv_json:%s",recv_json);
 	if(res==0){
 		if(parsejson(recv_json,ret_msg)==0){
 			printf("return message:%s\n",ret_msg);
@@ -258,16 +258,16 @@ int main(int argc, char *argv[]){
 	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
 	data[3][0]='f';
-	send2server("fat.fatmou.se/api/report",23,21,data);
-	for(i=0;i<500;i+1){
-	 receive4server("fat.fatmou.se/api/control",23,6,ret_msg);	
+	send2server(23,21,data);
+	for(i=0;i<5;i=i+1){
+	 receive4server(23,6,ret_msg);	
 	 }
 	//test for face detection  device id 15	 report id 7
 	data[0][0]='3';
 	sprintf(data[1],"3842");
 	sprintf(data[2],"34:42:65");
 	data[3][0]='0';
-	send2server("fat.fatmou.se/api/report",15,7,data);
+	send2server(15,7,data);
 
 	return 0;
 }

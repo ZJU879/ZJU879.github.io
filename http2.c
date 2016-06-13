@@ -188,24 +188,24 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	}
 
 }
-int send2server(char *webaddr,int device_id,char senddata[][20]){
+int send2server(int device_id,char senddata[][20]){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	int host_port=3000;//81;
-	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
+	GetHost("nya.fatmou.se/api/report", host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=report_packet(&m_socket_id,host_addr,host_file, host_port,device_id,senddata);
 	close(m_socket_id);
 	return res;//0 succeed  //-1 failed
 }
-int receive4server(char *webaddr,int device_id,char *ret_msg){
+int receive4server(int device_id,char *ret_msg){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	int host_port=3000;//81;
 	char recv_json[1000]="";
-	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
+	GetHost("nya.fatmou.se/api/poll", host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,recv_json);
 	if(res==0){
@@ -243,17 +243,17 @@ int main(int argc, char *argv[]){
 	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
 	data[3][0]='f';
-	send2server("nya.fatmou.se/api/report",4,data);
+	send2server(4,data);
 
 	for(i=0;i<4;i++)
-	 receive4server("nya.fatmou.se/api/poll",4,ret_msg);	
+	 receive4server(4,ret_msg);	
 	 
 	//test for face detection		
 	data[0][0]='3';
 	sprintf(data[1],"3842");
 	sprintf(data[2],"34:42:65");
 	data[3][0]='0';
-	send2server("nya.fatmou.se/api/report",28,data);
+	send2server(28,data);
 	return 0;
 }
 /**************************************************************
