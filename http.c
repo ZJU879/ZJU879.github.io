@@ -139,7 +139,7 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	/*准备POST request，将要发送给主机*/
 	char request[1024];
 	char message[1024];
-	sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766s&device_id=%d&control_id=%d&sr=R",device_id,control_id);
+	sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&control_id=%d&sr=R",device_id,control_id);
 	int len=strlen(message);
 	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
 	printf("%s", message);
@@ -215,17 +215,20 @@ int receive4server(char *webaddr,int device_id,int control_id,char *ret_msg){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
-	char recv_json[200];
+	char recv_json[200]="";
 	int host_port=3000;//81;
 	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,control_id,recv_json);
+	printf("recv_json:%s",recv_json);
 	if(res==0){
-		parsejson(recv_json,ret_msg);
-		printf("return message:%s\n",ret_msg);
-	}
-	else{
-		printf("no message return\n");
+		if(parsejson(recv_json,ret_msg)==0){
+			printf("return message:%s\n",ret_msg);
+		}
+		else{
+			printf("no message return\n");
+			res=-1;
+		}
 	}
 	close(m_socket_id);
 	return res;
@@ -233,11 +236,12 @@ int receive4server(char *webaddr,int device_id,int control_id,char *ret_msg){
 
 
 int parsejson(char *json,char *ret_msg){
-	int i=0;
+	int i=0;int res=0;
 	for(i=0;json[i]!='\0';i++){
-		if(json[i]=='s')sprintf(ret_msg,"{%c}",json[i+8]);
+		if(json[i]=='c'&&json[i+1]=='o'&&json[i+2]=='d'&&json[i+3]=='e') res=json[i+6]-'0';
+		if(json[i]=='s'&&json[i+1]=='t'&&json[i+2]=='a'&&json[i+3]=='r'&&json[i+4]=='t')sprintf(ret_msg,"{%c}",json[i+8]);
 	}
-	return 0;//0 have message; -1 no message
+	return res;//0 have message; -1 no message
 }
 
 
@@ -255,8 +259,9 @@ int main(int argc, char *argv[]){
 	sprintf(data[2],"7");
 	data[3][0]='f';
 	send2server("fat.fatmou.se/api/report",23,21,data);
+	for(i=0;i<500;i+1){
 	 receive4server("fat.fatmou.se/api/control",23,6,ret_msg);	
-	 
+	 }
 	//test for face detection  device id 15	 report id 7
 	data[0][0]='3';
 	sprintf(data[1],"3842");

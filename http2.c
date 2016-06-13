@@ -204,7 +204,7 @@ int receive4server(char *webaddr,int device_id,char *ret_msg){
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	int host_port=3000;//81;
-	char recv_json[1000];
+	char recv_json[1000]="";
 	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,recv_json);
@@ -223,10 +223,10 @@ int receive4server(char *webaddr,int device_id,char *ret_msg){
 int parsejson(char *json,char *ret_msg){
 	int i=0;int res=0;
 	for(i=0;json[i]!='\0';i++){
-		if(json[i]=='c') ret=json[i+6]-'0';
-		if(json[i]=='s')sprintf(ret_msg,"{%c}",json[i+8]);
+		if(json[i]=='c'&&json[i+1]=='o'&&json[i+2]=='d'&&json[i+3]=='e') res=json[i+6]-'0';
+		if(json[i]=='s'&&json[i+1]=='t'&&json[i+2]=='a'&&json[i+3]=='r'&&json[i+4]=='t')sprintf(ret_msg,"{%c}",json[i+8]);
 	}
-	return ret;//0 have message; -1 no message
+	return res;//0 have message; -1 no message
 }
 
 
@@ -244,6 +244,8 @@ int main(int argc, char *argv[]){
 	sprintf(data[2],"7");
 	data[3][0]='f';
 	send2server("nya.fatmou.se/api/report",4,data);
+
+	for(i=0;i<4;i++)
 	 receive4server("nya.fatmou.se/api/poll",4,ret_msg);	
 	 
 	//test for face detection		
