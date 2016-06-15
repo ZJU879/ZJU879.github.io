@@ -189,7 +189,7 @@ int get4ble(char* rdata)
         strcpy(rdata, buf4ble[rear4ble++]);
         if(rear4ble==MAX_BUF_SIZE)
             rear4ble=0;
-        return 0;
+        return strlen(buf4ble[rear4ble-1]);
     }
     else
         return 0;
