@@ -134,7 +134,7 @@ int ble_read(int ble_fd){
                 first=0;
         	}
         }
-    }
+}
     return 1;
 }
 
@@ -143,6 +143,7 @@ int ble_write(int ble_fd)
 {
 	if(rear2ble!=head2ble)
 	{
+	printf("in ble write");
     	write(ble_fd, buf2ble[rear2ble], strlen(buf2ble[rear2ble]));
     	rear2ble++;
     	if(rear2ble==MAX_BUF_SIZE)
@@ -170,6 +171,7 @@ int BLE_init()
 //send data to ble
 int send2ble(char *sdata)
 {
+	printf("in send to ble");
     	int len=strlen(sdata);
         strcpy(buf2ble[head2ble],sdata);
         if(head2ble==MAX_BUF_SIZE)
