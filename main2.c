@@ -96,26 +96,34 @@ int getDevID(char *buf, int device_type){
 void *listener(void *tmp){
     char recv_json[1024];
     int device_id = D_ID_872;
-    int control_id = C_ID_872;
     //char* cu = "http://fat.fatmou.se/api/control";
-    while(1){
-      if(receive4server(device_id,control_id,recv_json)){
+    while(dt=='2'){
+      if(receive4server(device_id,recv_json)!=-1){
           //do something
+          send2ble(recv_json);
       }
     }
 }
 
-void *thread_ble(void *tmp){
-    ble_fd = BLE_init();
+
+void *thread_4ble(void *tmp){
+    /*ble_fd = BLE_init();
     if( ble_fd == -1 ){
         perror("SerialInit Error!\n");
         return;
-    }
+    }*/
     while(1){
       if(dt=='1')
         ble_read(ble_fd);
       else if(dt=='2')
         ble_read_872(ble_fd);
+    }
+    return;
+}
+
+void *thread_2ble(void *tmp){
+    while(1){
+        ble_write(ble_fd);
     }
     return;
 }
@@ -129,17 +137,20 @@ int main(int argc, char ** argv){
     }
     dt = argv[1][0];
     char* server = "IP";
-    pthread_t th_listen,th_ble,th_plc;
+    pthread_t th_listen,th_2ble, th_4ble, th_plc;
     char buf[DEV_SIZE];
     char res[5][20];
     int device_id;
     int device_type;
     //BLE_init();
     printf("%d",BLE_init());
-    //PLC_init();
-    printf("Begin the program\n");
+    if( ble_fd == -1 ){
+        perror("SerialInit Error!\n");
+        return;
+    }
     pthread_create(&th_listen,NULL,listener,0);
-    pthread_create(&th_ble, NULL, thread_ble,0);
+    pthread_create(&th_4ble, NULL, thread_4ble,0);
+    pthread_create(&th_2ble, NULL, thread_2ble,0);
     //pthread_create(&th_plc, NULL, thread_plc,0);
     printf("Create thread sucessfully\n");
     while(1){

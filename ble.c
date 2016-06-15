@@ -141,7 +141,7 @@ int ble_read(int ble_fd){
 //write to the serial port
 int ble_write(int ble_fd)
 {
-	while(rear2ble!=head2ble)
+	if(rear2ble!=head2ble)
 	{
     	write(ble_fd, buf2ble[rear2ble], strlen(buf2ble[rear2ble]));
     	rear2ble++;

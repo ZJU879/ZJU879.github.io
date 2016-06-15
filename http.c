@@ -35,7 +35,7 @@ int Send_init(char* host_addr,int host_port){//连接服务器，返回是否成
 	//server_addr.sin_addr.s_addr = server_ip;
 	server_addr.sin_addr=*((struct in_addr *)host->h_addr);
 
-	
+
 	 //printf("IP Address: %s\n",inet_ntoa(*((struct in_addr *)host->h_addr)));
    	 //printf( "portnumber: %d\n\n ", host_port);
 
@@ -115,8 +115,8 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	      }
 	      //printf("%c", buffer[0]);/*把http头信息打印在屏幕上*/
 	    }
-	    else {	      
-	      i++;	      
+	    else {
+	      i++;
 	    }
 	    fwrite(buffer, 1, 1, fp);/*将http主体信息写入文件*/
 	    if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
@@ -183,7 +183,7 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	    }
 	    else {
 	      recv_json[iii++]=buffer[0];
-	      i++;	      
+	      i++;
 	    }
 	    fwrite(buffer, 1, 1, fp);/*将http信息写入文件*/
 	    if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
@@ -244,14 +244,14 @@ int parsejson(char *json,char *ret_msg){
 	return res;//0 have message; -1 no message
 }
 
-
+/*
 int main(int argc, char *argv[]){
 
 
 	char ret_msg[1024];//message to send back
 	int i;
 
-	
+
 	char data[5][20];
 	//test for air conditioner  device 23  control id 6  report id 21
 	sprintf(data[0],"3.42");//temperature
@@ -260,7 +260,7 @@ int main(int argc, char *argv[]){
 	data[3][0]='f';
 	send2server(23,21,data);
 	for(i=0;i<5;i=i+1){
-	 receive4server(23,6,ret_msg);	
+	 receive4server(23,6,ret_msg);
 	 }
 	//test for face detection  device id 15	 report id 7
 	data[0][0]='3';
@@ -270,7 +270,7 @@ int main(int argc, char *argv[]){
 	send2server(15,7,data);
 
 	return 0;
-}
+}*/
 /**************************************************************
 功能：从字符串src中分析出网站地址和端口，并得到用户要下载的文件
 ***************************************************************/
