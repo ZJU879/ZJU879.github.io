@@ -43,20 +43,17 @@ void ble_1_parse(char res[][20], char* src){
 
 //     air condition
 void ble_2_parse(char res[][20], char* src){
-    res[0][0] = src[0]; res[0][1] = 0;
-    res[1][0] = src[1];
-    res[1][1] = src[2];
-    res[1][2] = src[3];
-    res[1][3] = src[4];
-    res[1][4] = src[5]; res[1][5] = 0;
-    res[2][0] = src[6];
-    res[2][1] = src[7];
-    res[2][2] = src[8];
-    res[2][3] = src[9];
-    res[2][4] = src[10]; res[2][5] = 0;
-    res[3][0] = src[11]; res[3][1] = 0;//state
-    res[4][0] = src[12];
-    res[4][1] = src[13]; res[4][2] = 0;
+    res[0][0] = src[1];
+    res[0][1] = src[2];
+    res[0][2] = src[3];
+    res[0][3] = src[4];
+    res[0][4] = src[5]; res[0][4] = 0;
+    res[1][0] = src[6];
+    res[1][1] = src[7];
+    res[1][2] = src[8];
+    res[1][3] = src[9];
+    res[1][4] = src[10]; res[1][5] = 0;
+    res[2][0] = src[9];  res[2][1] = 0;
 }
 
 //     plc
