@@ -34,7 +34,7 @@ int Send_init(char* host_addr,int host_port){//连接服务器，返回是否成
 	server_addr.sin_port = htons(host_port);//
 	//server_addr.sin_addr.s_addr = server_ip;
 	server_addr.sin_addr=*((struct in_addr *)host->h_addr);
-	
+
 	 //printf("IP Address: %s\n",inet_ntoa(*((struct in_addr *)host->h_addr)));
    	 //printf( "portnumber: %d\n\n ", host_port);
 
@@ -102,8 +102,8 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	      }
 	      //printf("%c", buffer[0]);/*把http头信息打印在屏幕上*/
 	    }
-	    else {	      
-	      i++;	      
+	    else {
+	      i++;
 	    }
 		fwrite(buffer, 1, 1, fp);/*将http信息写入文件*/
 		if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
@@ -166,7 +166,7 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 		ii++;
 		if(ii>=10&&ii<=12){
 		resHead[ii%10]=buffer[0];
-		}	      
+		}
 	    }
 	    else {
 		recv_json[iii++]=buffer[0];/*把http主体信息写入recv_json*/
@@ -246,9 +246,9 @@ int main(int argc, char *argv[]){
 	send2server(4,data);
 
 	for(i=0;i<4;i++)
-	 receive4server(4,ret_msg);	
-	 
-	//test for face detection		
+	 receive4server(4,ret_msg);
+
+	//test for face detection
 	data[0][0]='3';
 	sprintf(data[1],"3842");
 	sprintf(data[2],"34:42:65");
