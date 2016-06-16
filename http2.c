@@ -58,8 +58,9 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	if(device_id==4)//air condidtioner
 		sprintf(message,"{\"auth_id\":41,\"auth_key\":\"19e8b1674012fb8c69699c99cf6e2f94\",\"device_id\":%d,\"payload\":{\"temperature\":\"%s\",\"humidity\":\"%s\",\"state\":\"%s\"}}",device_id,data[0],data[1],data[2]);
 	if(device_id==28)//face detection
-		sprintf(message,"{\"auth_id\":41,\"auth_key\":\"19e8b1674012fb8c69699c99cf6e2f94\",\"device_id\":%d,\"payload\":{\"type\":\"%c\",\"pid\":\"%s\",\"time\":\"%s\",\"result\":\"%c\"}}",device_id,data[0][0],data[1],data[2],data[3][0]);
-
+		sprintf(message,"{\"auth_id\":41,\"auth_key\":\"19e8b1674012fb8c69699c99cf6e2f94\",\"device_id\":%d,\"payload\":{\"type\":\"%s\",\"pid\":\"%s\",\"time\":\"%s\",\"result\":\"%s\"}}",device_id,data[0],data[1],data[2],data[3]);
+	if(device_id==44)//face detection
+		sprintf(message,"{\"auth_id\":41,\"auth_key\":\"19e8b1674012fb8c69699c99cf6e2f94\",\"device_id\":%d,\"payload\":{\"lamp\":\"%s\",\"voice\":\"%s\",\"body\":\"%s\",\"light\":\"%s\"}}",device_id,data[0],data[1],data[2],data[3]);
 	int len=strlen(message);
 	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/json\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
 	printf("%s", message);
@@ -230,7 +231,7 @@ int parsejson(char *json,char *ret_msg){
 }
 
 
-/*
+
 int main(int argc, char *argv[]){
 
 
@@ -249,13 +250,20 @@ int main(int argc, char *argv[]){
 	 receive4server(4,ret_msg);
 
 	//test for face detection
-	data[0][0]='3';
+	data[0][0]='3';data[0][1]=0;
 	sprintf(data[1],"3842");
 	sprintf(data[2],"34:42:65");
-	data[3][0]='0';
+	data[3][0]='0';data[3][1]=0;
 	send2server(28,data);
+
+	//test for plc
+	sprintf(data[0],"0");
+	sprintf(data[1],"2");
+	sprintf(data[2],"3");
+	sprintf(data[3],"4");
+	send2server(44,data);
 	return 0;
-}*/
+}
 /**************************************************************
 功能：从字符串src中分析出网站地址和端口，并得到用户要下载的文件
 ***************************************************************/

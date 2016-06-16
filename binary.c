@@ -51,6 +51,27 @@ packet* pack_report2(packet* p, void* data)
     packet_put_int(p, dataptr->state);
     return p;
 } 
+typedef struct reportData3 {
+    int device_id;
+    int report_id;
+    unsigned char* lamp;
+    unsigned char*  voice;
+    unsigned char*  body;
+    unsigned char* light;
+  
+} reportData3;
+packet* pack_report3(packet* p, void* data)
+{
+    reportData3* dataptr = (reportData3*)data;
+    packet_put_int(p, dataptr->device_id);
+    packet_put_int(p, dataptr->report_id);
+
+    packet_put_buffer(p, dataptr->lamp,1);
+    packet_put_buffer(p, dataptr->voice,1);
+    packet_put_buffer(p, dataptr->body, 1);
+    packet_put_buffer(p, dataptr->light,1);
+    return p;
+} 
 /*typedef struct controlRecvData {
     int start;
    
@@ -93,6 +114,13 @@ int binary_send(int device_id,int report_id,char data[][20]){
 	int state=atoi(data[2]);
 	reportData2 data2 = {device_id, report_id, humi, temp, state};
 	mouse_report(pack_report2, (void*)&data2);
+    }
+    else if(device_id==27){
+	reportData3 data3 = {device_id, report_id, data[0], data[1], data[2],data[3]};
+	mouse_report(pack_report3, (void*)&data3);
+    }
+    else{
+	printf("unknown message source\n");
     }
     return 0;
 }
@@ -137,6 +165,13 @@ int main()
 	sprintf(data[2],"34:42:65");
 	sprintf(data[3],"3");
 	binary_send(15,23,data);
+
+	//test for plc
+	sprintf(data[0],"1");
+	sprintf(data[1],"2");
+	sprintf(data[2],"3");
+	sprintf(data[3],"4");
+	binary_send(27,24,data);
 
 	 if(binary_recv(23,6,ret_msg)==0)
 	 printf("recv mesg:%s",ret_msg);

@@ -11,7 +11,7 @@
 #define KEY_FOR_LOGIN "19e8b1674012fb8c69699c99cf6e2f94"
 #define KEY_FOR_LOGIN4 "1d4c863112184f1a2a83e65fd9fa8bd8"
 #define KEY_FOR_LOGIN28 "15ea1d331d84dd91ba66326bee973e53"
-
+#define KEY_FOR_LOGIN44 "b048310fa6791a498f62d2d2266be7c9"
 // Report Sample for  face detection
 typedef struct reportData1 {
     int device_id;
@@ -53,6 +53,27 @@ packet* pack_report2(packet* p, void* data)
     packet_put_int(p, dataptr->state);
     return p;
 } 
+typedef struct reportData3 {
+    int device_id;
+    int report_id;
+    unsigned char* lamp;
+    unsigned char*  voice;
+    unsigned char*  body;
+    unsigned char* light;
+  
+} reportData3;
+packet* pack_report3(packet* p, void* data)
+{
+    reportData3* dataptr = (reportData3*)data;
+    packet_put_int(p, dataptr->device_id);
+    packet_put_int(p, dataptr->report_id);
+
+    packet_put_buffer(p, dataptr->lamp,1);
+    packet_put_buffer(p, dataptr->voice,1);
+    packet_put_buffer(p, dataptr->body, 1);
+    packet_put_buffer(p, dataptr->light,1);
+    return p;
+} 
 /*typedef struct controlRecvData {
     int start;
    
@@ -81,23 +102,31 @@ int binary_init(){
     int res1=mouse_login(41, KEY_FOR_LOGIN);
     int res2=mouse_login(4, KEY_FOR_LOGIN4);
     int res3=mouse_login(28, KEY_FOR_LOGIN28);
-    if (res1||res2||res3==0){
+    int res4=mouse_login(44, KEY_FOR_LOGIN44);
+    if (res1||res2||res3||res4==0){
 	return 0;
     } 
     else return -1;
 }
 int binary_send(int device_id,int report_id,char data[][20]){
-    if(device_id==28){
+    if(device_id==28){//face
         reportData1 data1 = {device_id, report_id, data[0], data[1], data[2],data[3]};
 	mouse_report(pack_report1, (void*)&data1);
     }
-    else if(device_id==4){
+    else if(device_id==4){//air
 	
 	float humi=(float)atof(data[0]);
 	float temp=atof(data[1]);
 	int state=atoi(data[2]);
 	reportData2 data2 = {device_id, report_id, humi, temp, state};
 	mouse_report(pack_report2, (void*)&data2);
+    }
+    else if(device_id==44){
+	reportData3 data3 = {device_id, report_id, data[0], data[1], data[2],data[3]};
+	mouse_report(pack_report3, (void*)&data3);
+    }
+    else{
+	printf("unknown message source\n");
     }
     return 0;
 }
@@ -149,7 +178,14 @@ int main()
 	sprintf(data[3],"3");
 	binary_send(28,23,data);
 
-	 if(binary_recv(4,6,ret_msg)==0)
+	//test for plc
+	sprintf(data[0],"1");
+	sprintf(data[1],"2");
+	sprintf(data[2],"3");
+	sprintf(data[3],"4");
+	binary_send(27,24,data);
+
+	 if(binary_recv(44,6,ret_msg)==0)
 	 printf("recv mesg:%s",ret_msg);
 	else
 	  printf("no message return!\n");
