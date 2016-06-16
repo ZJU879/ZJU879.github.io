@@ -56,20 +56,8 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	char request[1024];
 	char message[1024];
 
-	if(report_id==7)//face detection
+	if(report_id==23)//face detection
 		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\",\"time\":\"%s\",\"result\":\"%c\"}",device_id,report_id,data[0][0],data[1],data[2],data[3][0]);
-	else if(report_id==5)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"abc\":\"4\"}",device_id,report_id);
-	else if(report_id==9)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\",\"time\":\"%s\"}",device_id,report_id,data[0][0],data[1],data[2]);
-	else if(report_id==10)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\"}",device_id,report_id,data[0][0]);
-	else if(report_id==11)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"pid\":\"%s\"}",device_id,report_id,data[1]);
-	else if(report_id==12)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\"}",device_id,report_id,data[0][0],data[1]);
-	else if(report_id==13)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"time\":\"%s\"}",device_id,report_id,data[2]);
 	else if(report_id==21)//air conditioner
 			sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"humidity\":\"%s\",\"temperature\":\"%s\",\"state\":\"%s\"}",device_id,report_id,data[0],data[1],data[2]);
 
