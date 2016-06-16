@@ -111,7 +111,7 @@ void *thread_4ble(void *tmp){
     }*/
     while(1){
       if(dt=='1')
-        ble_read(ble_fd);
+        ble_read_872(ble_fd);
       else if(dt=='2')
         ble_read_872(ble_fd);
     }

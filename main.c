@@ -2,7 +2,7 @@
 #include "http.h"
 #include "ble.h"
 #define D_ID_875 15
-#define R_ID_875 7
+#define R_ID_875 23
 #define D_ID_872 23
 #define R_ID_872 21
 #define C_ID_872 6
@@ -114,7 +114,7 @@ void *thread_4ble(void *tmp){
     }*/
     while(1){
       if(dt=='1')
-        ble_read(ble_fd);
+        ble_read_872(ble_fd);
       else if(dt=='2')
         ble_read_872(ble_fd);
     }
