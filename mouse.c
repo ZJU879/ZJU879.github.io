@@ -29,13 +29,14 @@ static struct hostent* host;
 static packet local_ACK;
 static packet local_NACK;
 
-int mouse_init(int d, char* host_name, int port)
+int mouse_init(char* host_name, int port)
 {
-    device_id = d;
+    //device_id = d;
     if ((host = gethostbyname(host_name)) == NULL) {
         fprintf(stderr, "Gethostname error\n");
         fatal_error();
     }
+    printf("IP:%s\n",inet_ntoa(*((struct in_addr *)host->h_addr)));
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         fprintf(stderr, "Socket Error:%s\a\n", strerror(errno));
         fatal_error();
@@ -51,7 +52,7 @@ int mouse_init(int d, char* host_name, int port)
     return 0;
 }
 
-int mouse_login(char* device_secret)
+int mouse_login(int device_id,char* device_secret)
 {
     int ret = -1;
 

@@ -4,12 +4,14 @@
 #include <string.h>
 #include "binary.h"
 // #define MOUSE_HOST "localhost"
-#define MOUSE_HOST "106.2.108.194"
+#define MOUSE_HOST "nya.fatmou.se"
 #define MOUSE_PORT 10659
 
 //md5(md5(device_id)+device_name)
-#define KEY_FOR_LOGIN "ae027b7d42b34a173e94dfcbdc207766"
-
+#define KEY_FOR_LOGIN "19e8b1674012fb8c69699c99cf6e2f94"
+#define KEY_FOR_LOGIN4 "1d4c863112184f1a2a83e65fd9fa8bd8"
+#define KEY_FOR_LOGIN28 "15ea1d331d84dd91ba66326bee973e53"
+#define KEY_FOR_LOGIN44 "b048310fa6791a498f62d2d2266be7c9"
 // Report Sample for  face detection
 typedef struct reportData1 {
     int device_id;
@@ -97,17 +99,21 @@ packet* pack_control_send(packet* p, void* data)
 }*/
 int binary_init(){
     mouse_init(MOUSE_HOST, MOUSE_PORT);
-    if (mouse_login(8, KEY_FOR_LOGIN) == 0){
+    int res1=mouse_login(41, KEY_FOR_LOGIN);
+    int res2=mouse_login(4, KEY_FOR_LOGIN4);
+    int res3=mouse_login(28, KEY_FOR_LOGIN28);
+    int res4=mouse_login(44, KEY_FOR_LOGIN44);
+    if (res1||res2||res3||res4==0){
 	return 0;
     } 
     else return -1;
 }
 int binary_send(int device_id,int report_id,char data[][20]){
-    if(device_id==15){
+    if(device_id==28){//face
         reportData1 data1 = {device_id, report_id, data[0], data[1], data[2],data[3]};
 	mouse_report(pack_report1, (void*)&data1);
     }
-    else if(device_id==23){
+    else if(device_id==4){//air
 	
 	float humi=(float)atof(data[0]);
 	float temp=atof(data[1]);
@@ -115,7 +121,7 @@ int binary_send(int device_id,int report_id,char data[][20]){
 	reportData2 data2 = {device_id, report_id, humi, temp, state};
 	mouse_report(pack_report2, (void*)&data2);
     }
-    else if(device_id==27){
+    else if(device_id==44){
 	reportData3 data3 = {device_id, report_id, data[0], data[1], data[2],data[3]};
 	mouse_report(pack_report3, (void*)&data3);
     }
@@ -126,18 +132,24 @@ int binary_send(int device_id,int report_id,char data[][20]){
 }
 int binary_recv(int device_id,int control_id,char *recv){
     packet* pptr = NULL;
-    pptr=mouse_control_recv(device_id, control_id);
+    pptr=recv_packet();//mouse_control_recv(device_id, control_id);
     if(pptr==NULL)return -1;
     else{
 	
-	//sprintf(recv,"{%2x}",pptr->payload[0]);
 	sprintf(recv,"{1}");
 	packet_free(pptr);
 	return 0;
     }
 }
 int binary_exit(){
-    mouse_logout();
+    packet* p_logout = packet_allocate();
+    //dbg_print("---Preparing Logout packet---\n");
+    p_logout->message_type = LOGOUT;
+    //dbg_print("---Sending Logout packet---\n");
+    send_packet(p_logout);
+    packet_free(p_logout);
+    printf("---Logout end---\n\n");
+    return 0;
 }
 int main()
 {
@@ -155,7 +167,7 @@ int main()
 	sprintf(data[0],"3.42");//temperature
 	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
-	binary_send(23,21,data);
+	binary_send(4,21,data);
 	
 
 	 
@@ -164,7 +176,7 @@ int main()
 	sprintf(data[1],"3842");
 	sprintf(data[2],"34:42:65");
 	sprintf(data[3],"3");
-	binary_send(15,23,data);
+	binary_send(28,23,data);
 
 	//test for plc
 	sprintf(data[0],"1");
@@ -173,7 +185,7 @@ int main()
 	sprintf(data[3],"4");
 	binary_send(27,24,data);
 
-	 if(binary_recv(23,6,ret_msg)==0)
+	 if(binary_recv(44,6,ret_msg)==0)
 	 printf("recv mesg:%s",ret_msg);
 	else
 	  printf("no message return!\n");

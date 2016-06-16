@@ -15,7 +15,7 @@ typedef struct packet {
 	unsigned char* payload;
 	int size;
 	int content_length;
-}packet;
+}packet ;
 
 typedef packet* (*packingfunc)(packet*, void*);
 typedef packingfunc parsingfunc;
@@ -24,8 +24,8 @@ typedef packingfunc parsingfunc;
 extern "C" {
 #endif
 
-int mouse_init(int device_id, char* host_name, int port);
-int mouse_login(char* device_secret);
+int mouse_init(char* host_name, int port);
+int mouse_login(int device_id,char* device_secret);
 
 int mouse_report(packingfunc func, void* data);
 int mouse_control_send(packingfunc func, void* data);
