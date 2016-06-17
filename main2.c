@@ -136,12 +136,11 @@ void *thread_2ble(void *tmp){
 //主程序
 int main(int argc, char ** argv){
     //Controller Data Structure 控制器数据结构
-    if(argc!=2&&argv[1][0]!='1'&&argv[1][0]!='2'&&argv[1][0]!='3'&&argv[1][0]!='4'){
+    if(argc!=2||argv[1][0]!='1'&&argv[1][0]!='2'&&argv[1][0]!='3'&&argv[1][0]!='4'){
         printf("Invalid input!\n");
         return 0;
     }
     dt = argv[1][0];
-    char* server = "IP";
     pthread_t th_listen,th_2ble, th_4ble, th_plc;
     char buf[DEV_SIZE];
     char res[5][20];
