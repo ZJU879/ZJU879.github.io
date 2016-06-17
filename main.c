@@ -143,6 +143,7 @@ int main(int argc, char ** argv){
         printf("Invalid input!\n");
         return 0;
     }
+    binary_init();
     dt = argv[1][0];
     pthread_t th_listen,th_4ble,th_2ble,th_plc;
     char buf[DEV_SIZE];
@@ -191,14 +192,18 @@ int main(int argc, char ** argv){
             ble_2_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-	    if(dt=='2')
-	        if(send2server(device_id,report_id,res)==-1){
+	          if(dt=='2'){
+               printf("\n\nsend by http\n\n");
+	             if(send2server(device_id,report_id,res)==-1){
                     printf("Failed to send to server!\n");
-            	}
-  	    else
-                if(!binary_send(device_id,report_id,res)==-1){
+            	 }
+            }
+  	        else{
+               printf("\n\nsend by bin\n\n");
+                if(binary_send(device_id,report_id,res)==-1){
                     printf("Failed to send to server!\n");
                 }
+           }
         }
       }
         //Deal with the HTTP data recieve
