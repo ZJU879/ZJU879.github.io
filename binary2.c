@@ -39,7 +39,7 @@ typedef struct reportData2 {
     int report_id;
     float humidity;
     float temperature;
-    int state;
+    unsigned char* state;
 
 } reportData2;
 packet* pack_report2(packet* p, void* data)
@@ -50,7 +50,7 @@ packet* pack_report2(packet* p, void* data)
 
     packet_put_float(p, dataptr->humidity);
     packet_put_float(p, dataptr->temperature);
-    packet_put_int(p, dataptr->state);
+    packet_put_buffer(p, dataptr->state,1);
     return p;
 }
 typedef struct reportData3 {
@@ -117,8 +117,8 @@ int binary_send(int device_id,int report_id,char data[][20]){
 
 	float humi=(float)atof(data[0]);
 	float temp=atof(data[1]);
-	int state=atoi(data[2]);
-	reportData2 data2 = {device_id, report_id, humi, temp, state};
+	//int state=atoi(data[2]);
+	reportData2 data2 = {device_id, report_id, humi, temp, data[2]};
 	mouse_report(pack_report2, (void*)&data2);
     }
     else if(device_id==44){
@@ -151,12 +151,12 @@ int binary_exit(){
     printf("---Logout end---\n\n");
     return 0;
 }
-/*
+
 int main()
 {
     printf("hello!\n");
 
-  /* packet* p =packet_allocate();;
+   packet* p =packet_allocate();;
     packet_put_int(p, 3);
 	//int a=pptr->payload[0];
 	printf("recv:%2X\n",p->payload[0]);
@@ -165,7 +165,7 @@ int main()
 
 	char ret_msg[30];
 	char data[5][20];
-	/*sprintf(data[0],"3.42");//temperature
+	sprintf(data[0],"3.42");//temperature
 	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
 	binary_send(4,21,data);
@@ -197,4 +197,4 @@ int main()
 
 
     return 0;
-}*/
+}

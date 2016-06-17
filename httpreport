@@ -749,3 +749,11 @@ Date: Thu, 16 Jun 2016 14:04:29 GMT
 Connection: close
 
 {"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=08C9B5097E1F8C4CB3A57068114C728A; Path=/; HttpOnly
+Content-Length: 11
+Date: Fri, 17 Jun 2016 07:06:35 GMT
+Connection: close
+
+{"code":0}

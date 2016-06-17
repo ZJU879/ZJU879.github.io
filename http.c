@@ -249,7 +249,7 @@ void plc_debug(){
 	receive4server(27,9,ret_msg);
 }
 
-/*int main(int argc, char *argv[]){
+int main(int argc, char *argv[]){
 
 
 	char ret_msg[1024];//message to send back
@@ -264,7 +264,7 @@ void plc_debug(){
 	data[3][0]='f';
 	send2server(23,21,data);
 	for(i=0;i<5;i=i+1){
-	 receive4server(27,9,ret_msg);
+	 receive4server(23,6,ret_msg);
 	}
 	//test for face detection  device id 15	 report id 7
 	data[0][0]='3';data[0][1]=0;
@@ -279,7 +279,7 @@ void plc_debug(){
 	sprintf(data[3],"4");
 	//send2server(27,24,data);
 	return 0;
-}*/
+}
 /**************************************************************
 功能：从字符串src中分析出网站地址和端口，并得到用户要下载的文件
 ***************************************************************/

@@ -183,3 +183,32 @@ Connection: close
 {"code":0,"data":{"start":"1"}}
 0
 
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=168058FCB07DD598F94535E8DC1BE245; Path=/; HttpOnly
+Content-Length: 157
+Date: Fri, 17 Jun 2016 07:06:38 GMT
+Connection: close
+
+{"code":0,"id":215,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-17T15:06:39.014Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1466147199014}HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=163928133C6FECB3F8B1AC3E988C84AB; Path=/; HttpOnly
+Content-Length: 157
+Date: Fri, 17 Jun 2016 07:06:39 GMT
+Connection: close
+
+{"code":0,"id":216,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-17T15:06:39.944Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1466147199944}HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=E726A7807A05CB5CD6CC5971405DBDF9; Path=/; HttpOnly
+Content-Length: 157
+Date: Fri, 17 Jun 2016 07:06:39 GMT
+Connection: close
+
+{"code":0,"id":217,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-17T15:06:40.554Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1466147200554}HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=16E9FB5A32BA8AB791D3753A0518D5F7; Path=/; HttpOnly
+Content-Length: 157
+Date: Fri, 17 Jun 2016 07:06:41 GMT
+Connection: close
+
+{"code":0,"id":218,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-17T15:06:41.274Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1466147201274}
