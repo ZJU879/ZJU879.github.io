@@ -1,6 +1,8 @@
 #include "flagdef.h"
 #include "http.h"
 #include "ble.h"
+#include "binary.h"
+#include "mouse.h"
 #define D_ID_875 15
 #define R_ID_875 23
 #define D_ID_872 23
@@ -137,7 +139,7 @@ void *thread_2ble(void *tmp){
 //主程序
 int main(int argc, char ** argv){
     //Controller Data Structure 控制器数据结构
-    if(argc!=2&&argv[1][0]!='1'&&argv[1][0]!='2'){
+    if(argc!=2&&argv[1][0]!='1'&&argv[1][0]!='2'&&argv[1][0]!='3'&&argv[1][0]!='4'){
         printf("Invalid input!\n");
         return 0;
     }
