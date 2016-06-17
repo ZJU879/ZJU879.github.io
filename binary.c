@@ -130,8 +130,8 @@ int binary_recv(int device_id,int control_id,char *recv){
     if(pptr==NULL)return -1;
     else{
 	
-	//sprintf(recv,"{%2x}",pptr->payload[0]);
-	sprintf(recv,"{1}");
+	sprintf(recv,"{%d}",pptr->payload[0]);
+	//sprintf(recv,"{1}");
 	packet_free(pptr);
 	return 0;
     }
@@ -152,7 +152,7 @@ int main()
 	
 	char ret_msg[30];
 	char data[5][20];
-	sprintf(data[0],"3.42");//temperature
+	/*sprintf(data[0],"3.42");//temperature
 	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
 	binary_send(23,21,data);
@@ -171,12 +171,14 @@ int main()
 	sprintf(data[1],"2");
 	sprintf(data[2],"3");
 	sprintf(data[3],"4");
-	binary_send(27,24,data);
-
+	binary_send(27,24,data);*/
+	int i;
+	for(i=0;i<5;i++){
 	 if(binary_recv(23,6,ret_msg)==0)
 	 printf("recv mesg:%s",ret_msg);
 	else
 	  printf("no message return!\n");
+	}
 
         binary_exit();
     }

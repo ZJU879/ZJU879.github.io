@@ -135,8 +135,8 @@ int binary_recv(int device_id,int control_id,char *recv){
     pptr=recv_packet();//mouse_control_recv(device_id, control_id);
     if(pptr==NULL)return -1;
     else{
-	
-	sprintf(recv,"{1}");
+	sprintf(recv,"{%c}",pptr->payload[4]);
+	//sprintf(recv,"{1}");
 	packet_free(pptr);
 	return 0;
     }
@@ -164,7 +164,7 @@ int main()
 	
 	char ret_msg[30];
 	char data[5][20];
-	sprintf(data[0],"3.42");//temperature
+	/*sprintf(data[0],"3.42");//temperature
 	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
 	binary_send(4,21,data);
@@ -183,13 +183,14 @@ int main()
 	sprintf(data[1],"2");
 	sprintf(data[2],"3");
 	sprintf(data[3],"4");
-	binary_send(27,24,data);
-
-	 if(binary_recv(44,6,ret_msg)==0)
+	binary_send(44,24,data);*/
+	int i;
+	for(i=0;i<5;i++){
+	 if(binary_recv(4,6,ret_msg)==0)
 	 printf("recv mesg:%s",ret_msg);
 	else
 	  printf("no message return!\n");
-
+	}
         binary_exit();
     }
 	
