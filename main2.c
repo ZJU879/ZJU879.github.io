@@ -190,17 +190,18 @@ int main(int argc, char ** argv){
             //Send data to the server
 	          if(dt=='2'){
                printf("\n\nsend by http\n\n");
-	             if(send2server(device_id,report_id,res)==-1){
+	             if(send2server(device_id,res)==-1){
                     printf("Failed to send to server!\n");
             	 }
             }
   	        else{
                printf("\n\nsend by bin\n\n");
-                if(binary_send(device_id,report_id,res)==-1){
+                if(binary_send(device_id,0,res)==-1){
                     printf("Failed to send to server!\n");
                 }
            }
       }
+    }
         //Deal with the HTTP data recieve
         if(flag_rec){
         }
