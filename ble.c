@@ -55,6 +55,51 @@ int serial_init_ble(){
     return ble_fd;
 }
 
+int ble_read_872(int ble_fd){
+   int nRet=0;
+   int nRet1=0;
+   int nRet2=0;
+    int flag=1;
+    char str[BLE_SIZE];
+    int first=0;
+    while(flag||nRet!=0)
+    {
+        nRet = read(ble_fd, str+nRet1+nRet2, BLE_SIZE);
+        if(-1 == nRet)
+        {
+            perror("Read Data Error!\n");
+            break;
+        }
+        if(0 < nRet)
+        {
+            if(first==0)
+            {
+                first=1;
+		nRet1=nRet;
+            }
+            else if(first==1)
+            {
+                first=2;
+                nRet2=nRet;
+            }
+            else
+            {
+                str[15+nRet]=0;
+                strcpy(buf4ble[head4ble],str+1);
+                printf("str Data: %s\n", str+1);
+                if(head4ble==MAX_BUF_SIZE)
+                    head4ble=0;
+                else
+                    head4ble++;
+                if(head4ble==rear4ble)
+                    rear4ble++;
+                first=0;
+            }
+        }
+    }
+    return 1;
+}
+
 //return the len of the data
 int ble_read(int ble_fd){
     int nRet=0;
@@ -73,7 +118,6 @@ int ble_read(int ble_fd){
         {
         	if(first==0)
         	{
-        		printf("first part");
         		first=1;
         	}
         	else
@@ -87,17 +131,24 @@ int ble_read(int ble_fd){
                 	head4ble++;
             	if(head4ble==rear4ble)
                 	rear4ble++;
-                print_buf();
                 first=0;
         	}
         }
-    }
+}
+    return 1;
 }
 
 //write to the serial port
-int ble_write(int ble_fd, int len)
+int ble_write(int ble_fd)
 {
-    return write(ble_fd, buf2ble, len);
+	if(rear2ble!=head2ble)
+	{
+	printf("in ble write");
+    	write(ble_fd, buf2ble[rear2ble], strlen(buf2ble[rear2ble]));
+    	rear2ble++;
+    	if(rear2ble==MAX_BUF_SIZE)
+    		rear2ble=0;
+	}
 }
 
 void print_buf()
@@ -118,39 +169,30 @@ int BLE_init()
 }
 
 //send data to ble
-void send2ble()
+int send2ble(char *sdata)
 {
-
+	printf("in send to ble");
+    	int len=strlen(sdata);
+        strcpy(buf2ble[head2ble],sdata);
+        if(head2ble==MAX_BUF_SIZE)
+            head2ble=0;
+        else
+        	head2ble++;
+        if(head2ble==rear2ble)
+        	rear2ble++;
+        return len;
 }
 
 //get data from ble
-int get4ble(char* tmp)
+int get4ble(char* rdata)
 {
     if(rear4ble!=head4ble)
     {
-        strcpy(tmp, buf4ble[rear4ble++]);
+        strcpy(rdata, buf4ble[rear4ble++]);
         if(rear4ble==MAX_BUF_SIZE)
             rear4ble=0;
-        return 1;
+        return strlen(buf4ble[rear4ble-1]);
     }
     else
         return 0;
 }
-
-/*
-int main(int argc, char **argv)
-{
-    ble_fd=BLE_init();
-    if( ble_fd == -1 )
-    {
-        perror("SerialInit Error!\n");
-        return -1;
-    }
-
-    ble_read(ble_fd);
-
-    print_buf();
-
-    close(ble_fd);
-    return 0;
-}*/

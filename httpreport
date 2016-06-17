@@ -1,0 +1,751 @@
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=C858794B47531B576129A05CAD0B5E41; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:31:44 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=478B9C01336D305CF11B49FA3382A05A; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:31:56 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=7BB3472DD1820292404913AC55191C88; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:33:26 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=36763887DD69B586E5E694F6209E2ACA; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:33:58 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=107DEE71E24F228614CD140556DE5161; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:34:06 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:36:55 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:41:16 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:41:17 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:41:30 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:41:31 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:41:34 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:41:35 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=12E578F2C0186481B61983457B362934; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:42:19 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=CB883A8B64FCF518D7B2EB2A7844E582; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:42:22 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=A0FA2AB4AB5BEDACEDE43A329A4785B7; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:42:25 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=209BE34C8676B795CB0A866A42627856; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:42:25 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=F6916298B9F59DE14034F059F639B455; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:42:27 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=EFA1030DCC45E0A578CE0943C6955471; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:44:06 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=F42EA215FE80415B3D9FD3225B75BD40; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:44:08 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=FE1D5CD42357518A027F82D0E70B849E; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:44:08 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=CC1526C199AB1842754F219F129C37AC; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:44:09 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=D82D993E74BAD5590B854D28F4299A94; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:44:10 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=D4C0674E06294F528DBF82B20D9CD712; Path=/; HttpOnly
+Content-Length: 11
+Date: Wed, 15 Jun 2016 05:44:10 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:44:50 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:44:53 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:44:55 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 06:10:11 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 400 Bad Request
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=BAD3AF4A6B917058AC17E159401FBEB0; Path=/; HttpOnly
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Thu, 16 Jun 2016 13:16:42 GMT
+Connection: close
+
+7b
+{"timestamp":1466083002153,"status":400,"error":"Bad Request","message":"For input string: \"59.00\"","path":"/api/report"}
+0
+
+HTTP/1.1 400 Bad Request
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=05CC65E4F7EC746059F5F2112BB33A95; Path=/; HttpOnly
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Thu, 16 Jun 2016 13:16:47 GMT
+Connection: close
+
+7b
+{"timestamp":1466083007115,"status":400,"error":"Bad Request","message":"For input string: \"59.00\"","path":"/api/report"}
+0
+
+HTTP/1.1 400 Bad Request
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=5BA8B0AF19B776E720E451194E941927; Path=/; HttpOnly
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Thu, 16 Jun 2016 13:16:52 GMT
+Connection: close
+
+7b
+{"timestamp":1466083012163,"status":400,"error":"Bad Request","message":"For input string: \"59.00\"","path":"/api/report"}
+0
+
+HTTP/1.1 400 Bad Request
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=29171FEC3C959D15B3FDAF5E44100A43; Path=/; HttpOnly
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Thu, 16 Jun 2016 13:16:57 GMT
+Connection: close
+
+7b
+{"timestamp":1466083017148,"status":400,"error":"Bad Request","message":"For input string: \"59.00\"","path":"/api/report"}
+0
+
+HTTP/1.1 400 Bad Request
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=D3C05EAC037770D11174F567F3383226; Path=/; HttpOnly
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Thu, 16 Jun 2016 13:17:02 GMT
+Connection: close
+
+7b
+{"timestamp":1466083022189,"status":400,"error":"Bad Request","message":"For input string: \"59.00\"","path":"/api/report"}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:17:17 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:17:22 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:17:27 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:17:32 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:17:37 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:17:42 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:17:47 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:17:52 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:17:57 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:02 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:07 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:12 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:17 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:22 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:27 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:32 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:37 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:42 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:47 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:52 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:57 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:19:02 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:19:07 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:19:12 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:19:17 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=9DF1C531D8B3AEC78640D6160D8E77AB; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:20:03 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=6648992240148A3B77C8E04CD20B51BD; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:20:08 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=F1D0FCB5DA1A89F1F2877C904F5AD846; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:20:13 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=38FC487FF766F5C11D25555AD2648B16; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:20:18 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=3AD068A381C4808C702D3E071F36E84D; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:20:23 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=C1011318B6730483F79077F83BF8E9B1; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:20:28 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=134F67838E3D5552983745AE12376E80; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:20:33 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=CFDBF280F40F1C342B549B15480E0C5B; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:20:38 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=7BA5624A86B42F44CB5AED89B891A130; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:20:43 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:21:18 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:21:23 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:21:28 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:21:33 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:21:43 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+a
+{"code":0}
+0
+
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=A5BCC1E4B014EF7AD8FFDDCC95A4904C; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:47:47 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=77832201726CAE5C876ABD37BD88C08B; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:48:02 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=D18FA00EEC5C6CA21DBF8022A1705A8A; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:48:19 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=A8B63C61D2BF498F56F356C8A90157F6; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 13:52:08 GMT
+Connection: close
+
+{"code":0}
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=F5E7F4076B41FB4F3DFB89E33E5ACBDE; Path=/; HttpOnly
+Content-Length: 11
+Date: Thu, 16 Jun 2016 14:04:29 GMT
+Connection: close
+
+{"code":0}

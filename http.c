@@ -35,7 +35,7 @@ int Send_init(char* host_addr,int host_port){//连接服务器，返回是否成
 	//server_addr.sin_addr.s_addr = server_ip;
 	server_addr.sin_addr=*((struct in_addr *)host->h_addr);
 
-	
+
 	 //printf("IP Address: %s\n",inet_ntoa(*((struct in_addr *)host->h_addr)));
    	 //printf( "portnumber: %d\n\n ", host_port);
 
@@ -56,22 +56,12 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	char request[1024];
 	char message[1024];
 
-	if(report_id==7)//face detection
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\",\"time\":\"%s\",\"result\":\"%c\"}",device_id,report_id,data[0][0],data[1],data[2],data[3][0]);
-	else if(report_id==5)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"abc\":\"4\"}",device_id,report_id);
-	else if(report_id==9)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\",\"time\":\"%s\"}",device_id,report_id,data[0][0],data[1],data[2]);
-	else if(report_id==10)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\"}",device_id,report_id,data[0][0]);
-	else if(report_id==11)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"pid\":\"%s\"}",device_id,report_id,data[1]);
-	else if(report_id==12)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%c\",\"pid\":\"%s\"}",device_id,report_id,data[0][0],data[1]);
-	else if(report_id==13)
-		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"time\":\"%s\"}",device_id,report_id,data[2]);
+	if(report_id==23)//face detection
+		sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"type\":\"%s\",\"pid\":\"%s\",\"time\":\"%s\",\"result\":\"%s\"}",device_id,report_id,data[0],data[1],data[2],data[3]);
 	else if(report_id==21)//air conditioner
 			sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"humidity\":\"%s\",\"temperature\":\"%s\",\"state\":\"%s\"}",device_id,report_id,data[0],data[1],data[2]);
+	else if(report_id==24)//plc
+			sprintf(message,"auth_id=8&auth_key=ae027b7d42b34a173e94dfcbdc207766&device_id=%d&report_id=%d&payload={\"lamp\":\"%s\",\"voice\":\"%s\",\"body\":\"%s\",\"light\":\"%s\"}",device_id,report_id,data[0],data[1],data[2],data[3]);
 
 	int len=strlen(message);
 	sprintf(request, "POST /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\nCache-Control: no-cache\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: %s:%d\r\nConnection: Close\r\nContent-Length: %d\r\n\r\n%s",host_file,  host_addr, host_port,len,message);
@@ -115,8 +105,8 @@ int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,
 	      }
 	      //printf("%c", buffer[0]);/*把http头信息打印在屏幕上*/
 	    }
-	    else {	      
-	      i++;	      
+	    else {
+	      i++;
 	    }
 	    fwrite(buffer, 1, 1, fp);/*将http主体信息写入文件*/
 	    if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
@@ -183,7 +173,7 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	    }
 	    else {
 	      recv_json[iii++]=buffer[0];
-	      i++;	      
+	      i++;
 	    }
 	    fwrite(buffer, 1, 1, fp);/*将http信息写入文件*/
 	    if(i%1024 == 0) fflush(fp);/*每1K时存盘一次*/
@@ -200,27 +190,27 @@ int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port
 	}
 
 }
-int send2server(char *webaddr,int device_id,int report_id,char senddata[][20]){
+int send2server(int device_id,int report_id,char senddata[][20]){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	int host_port=3000;//81;
-	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
+	GetHost("fat.fatmou.se/api/report", host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=report_packet(&m_socket_id,host_addr,host_file, host_port,device_id,report_id,senddata);
 	close(m_socket_id);
 	return res;
 }
-int receive4server(char *webaddr,int device_id,int control_id,char *ret_msg){
+int receive4server(int device_id,int control_id,char *ret_msg){
 /* 获取输入参数 */
 	char host_addr[256]="115.29.112.57";//"10.110.34.143";//"115.29.112.57";
 	char host_file[1024]="testEmbed";//"mysite/manage1.php";//"testEmbed";
 	char recv_json[200]="";
 	int host_port=3000;//81;
-	GetHost(webaddr, host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
+	GetHost("fat.fatmou.se/api/control", host_addr, host_file, &host_port);/*分析网址、端口、文件名等*/
 	int m_socket_id=Send_init(host_addr,host_port);
 	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,control_id,recv_json);
-	printf("recv_json:%s",recv_json);
+	//printf("recv_json:%s",recv_json);
 	if(res==0){
 		if(parsejson(recv_json,ret_msg)==0){
 			printf("return message:%s\n",ret_msg);
@@ -251,24 +241,29 @@ int main(int argc, char *argv[]){
 	char ret_msg[1024];//message to send back
 	int i;
 
-	
+
 	char data[5][20];
 	//test for air conditioner  device 23  control id 6  report id 21
 	sprintf(data[0],"3.42");//temperature
 	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
 	data[3][0]='f';
-	send2server("fat.fatmou.se/api/report",23,21,data);
-	for(i=0;i<500;i+1){
-	 receive4server("fat.fatmou.se/api/control",23,6,ret_msg);	
-	 }
+	send2server(23,21,data);
+	//for(i=0;i<5;i=i+1){
+	 //receive4server(23,6,ret_msg);
+	// }
 	//test for face detection  device id 15	 report id 7
-	data[0][0]='3';
+	data[0][0]='3';data[0][1]=0;
 	sprintf(data[1],"3842");
 	sprintf(data[2],"34:42:65");
-	data[3][0]='0';
-	send2server("fat.fatmou.se/api/report",15,7,data);
+	data[3][0]='0';data[3][1]=0;
+	send2server(15,23,data);
 
+	sprintf(data[0],"0");
+	sprintf(data[1],"2");
+	sprintf(data[2],"3");
+	sprintf(data[3],"4");
+	send2server(27,24,data);
 	return 0;
 }
 /**************************************************************

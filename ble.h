@@ -32,14 +32,16 @@ int serial_init_ble();
 //return the len of the data
 int ble_read(int ble_fd);
 
+int ble_read_872(int ble_fd);
+
 //write to the serial port
-int ble_write(int ble_fd, int len);
+int ble_write(int ble_fd);
 
 //BLE module
 int BLE_init();
 
 //send data to ble
-void send2ble();
+int send2ble(char *tmp);
 
 //get data from ble
 int  get4ble(char *tmp);
