@@ -211,6 +211,7 @@ int receive4server(int device_id,char *ret_msg){
 	int res=control_packet(&m_socket_id,host_addr,host_file,host_port,device_id,recv_json);
 	if(res==0){
 		if(parsejson(recv_json,ret_msg)==0){
+			printf("recv_json:%s\n",recv_json);
 			printf("return message:%s\n",ret_msg);
 		}
 		else{
@@ -224,15 +225,33 @@ int receive4server(int device_id,char *ret_msg){
 int parsejson(char *json,char *ret_msg){
 	int i=0;int res=0;
 	for(i=0;json[i]!='\0';i++){
-		if(json[i]=='c'&&json[i+1]=='o'&&json[i+2]=='d'&&json[i+3]=='e') res=json[i+6]-'0';
-		if(json[i]=='s'&&json[i+1]=='t'&&json[i+2]=='a'&&json[i+3]=='r'&&json[i+4]=='t')sprintf(ret_msg,"{%c}",json[i+8]);
+		if(json[i]=='c'&&json[i+1]=='o'&&json[i+2]=='d'&&json[i+3]=='e')
+			res=json[i+6]-'0';
+
+		if(json[i]=='s'&&json[i+1]=='t'&&json[i+2]=='a'&&json[i+3]=='r'&&json[i+4]=='t')
+			sprintf(ret_msg,"{%c}",json[i+8]);
+		//else res=-1;
+		if(json[i]=='f'&&json[i+1]=='f'&&json[i+2]=='0'){
+			//printf("33");
+			char data[5][20];
+			sprintf(data[0],"0");
+			sprintf(data[1],"1");
+			sprintf(data[2],"1");
+			sprintf(data[3],"0");
+			send2server(44,data);
+			res=-1;
+		}
+			
 	}
 	return res;//0 have message; -1 no message
 }
 
+void plc_debug(){
+  char ret_msg[40];
+  receive4server(44,ret_msg);
+}
 
-
-int main(int argc, char *argv[]){
+/*int main(int argc, char *argv[]){
 
 
 	char ret_msg[1024];//
@@ -247,7 +266,7 @@ int main(int argc, char *argv[]){
 	send2server(4,data);
 
 	for(i=0;i<4;i++)
-	 receive4server(4,ret_msg);
+	 receive4server(44,ret_msg);
 
 	//test for face detection
 	data[0][0]='3';data[0][1]=0;
@@ -261,9 +280,9 @@ int main(int argc, char *argv[]){
 	sprintf(data[1],"2");
 	sprintf(data[2],"3");
 	sprintf(data[3],"4");
-	send2server(44,data);
+	//send2server(44,data);
 	return 0;
-}
+}*/
 /**************************************************************
 功能：从字符串src中分析出网站地址和端口，并得到用户要下载的文件
 ***************************************************************/
