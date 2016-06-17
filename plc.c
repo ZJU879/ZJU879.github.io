@@ -145,7 +145,7 @@ int get4ble(char* tmp)
 }
 
 /*
-int main(int argc, char **argv)
+int b(int argc, char **argv)
 {
     ble_fd=BLE_init();
     if( ble_fd == -1 )

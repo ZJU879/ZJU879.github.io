@@ -65,18 +65,10 @@ void ble_2_parse(char res[][20], char* src){
 
 //     plc
 void plc_parse (char res[][20], char* src){
-    res[0][0] = src[0]; res[0][1] = 0;
-    res[1][0] = src[1];
-    res[1][1] = src[2];
-    res[1][2] = src[3];
-    res[1][3] = src[4];
-    res[1][4] = src[5];
-    res[1][5] = src[6];
-    res[1][6] = src[7];
-    res[1][7] = src[8];
-    res[1][8] = src[9];
-    res[1][9] = src[10]; res[1][10] = 0;
-    res[2][0] = src[11]; res[4][1] = 0;
+    res[0][0] = src[5]; res[0][1] = 0;
+    res[1][0] = src[6]; res[1][1] = 0;
+    res[2][0] = src[7]; res[2][1] = 0;
+    res[3][0] = src[8]; res[3][1] = 0;
 }
 
 /*
@@ -99,8 +91,8 @@ int getDevID(char *buf, int device_type){
 
 void *listener(void *tmp){
     char recv_json[1024];
-    int device_id = D_ID_872;
-    int control_id = C_ID_872;
+    int device_id = D_ID_plc;
+    int control_id = C_ID_plc;
     //char* cu = "http://fat.fatmou.se/api/control";
     while(dt=='2'){
       if(receive4server(device_id,control_id,recv_json)!=-1){
@@ -123,6 +115,7 @@ void *thread_4ble(void *tmp){
         return;
     }*/
     while(1){
+      ble_read(ble_fd);
     }
     return;
 }
@@ -164,11 +157,11 @@ int main(int argc, char ** argv){
     while(1){
         if(get4ble(buf)){
             //Get device ID
-            printf("Data from 875 bluetooth device\n");
+            printf("Data from plc bluetooth device\n");
             //875 face detection
-            device_id = D_ID_875;
-            report_id = R_ID_875;
-            ble_1_parse(res,buf);
+            device_id = D_ID_plc;
+            report_id = R_ID_plc;
+            plc_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
             if(dt=='1')
