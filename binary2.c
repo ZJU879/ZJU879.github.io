@@ -151,7 +151,7 @@ int binary_exit(){
     printf("---Logout end---\n\n");
     return 0;
 }
-
+/*
 int main()
 {
     printf("hello!\n");
@@ -197,4 +197,4 @@ int main()
 
 
     return 0;
-}
+}*/

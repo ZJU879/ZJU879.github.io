@@ -90,22 +90,6 @@ int getDevID(char *buf, int device_type){
 }
 
 void *listener(void *tmp){
-    char recv_json[1024];
-    int device_id = D_ID_plc;
-    int control_id = C_ID_plc;
-    //char* cu = "http://fat.fatmou.se/api/control";
-    while(dt=='2'){
-      if(receive4server(device_id,control_id,recv_json)!=-1){
-          //do something
-          send2ble(recv_json);
-      }
-    }
-    while(dt=='4'){
-      if(binary_recv(device_id,control_id,recv_json)!=-1){
-          //do something
-          send2ble(recv_json);
-      }
-    }
 }
 
 void *thread_4ble(void *tmp){
