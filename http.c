@@ -228,7 +228,7 @@ int receive4server(int device_id,int control_id,char *ret_msg){
 int parsejson(char *json,char *ret_msg){
 	int i=0;int res=0;
 	for(i=0;json[i]!='\0';i++){
-		if(json[i]=='c'&&json[i+1]=='o'&&json[i+2]=='d'&&json[i+3]=='e') 
+		if(json[i]=='c'&&json[i+1]=='o'&&json[i+2]=='d'&&json[i+3]=='e')
 			res=json[i+6]-'0';
 		if(json[i]=='s'&&json[i+1]=='t'&&json[i+2]=='a'&&json[i+3]=='r'&&json[i+4]=='t')
 			sprintf(ret_msg,"{%c}",json[i+8]);
@@ -240,7 +240,7 @@ int parsejson(char *json,char *ret_msg){
 			sprintf(data[3],"0");
 			send2server(27,24,data);
 			res=-1;
-		}						
+		}
 	}
 	return res;//0 have message; -1 no message
 }
@@ -248,7 +248,7 @@ void plc_debug(){
 	char ret_msg[40];
 	receive4server(27,9,ret_msg);
 }
-
+/*
 int main(int argc, char *argv[]){
 
 
@@ -279,7 +279,7 @@ int main(int argc, char *argv[]){
 	sprintf(data[3],"4");
 	//send2server(27,24,data);
 	return 0;
-}
+}*/
 /**************************************************************
 功能：从字符串src中分析出网站地址和端口，并得到用户要下载的文件
 ***************************************************************/
