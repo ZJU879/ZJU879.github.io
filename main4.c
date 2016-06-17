@@ -1,5 +1,5 @@
 #include "flagdef.h"
-#include "http.h"
+#include "http2.h"
 #include "plc.h"
 #include "binary.h"
 #include "mouse.h"
@@ -149,7 +149,7 @@ int main(int argc, char ** argv){
             printf("%s\n",buf);
             //Send data to the server
             if(dt=='1')
-		            send2server(device_id,report_id,res);
+		            send2server(device_id,res);
 	          else
 		           binary_send(device_id,report_id,res);
        }
