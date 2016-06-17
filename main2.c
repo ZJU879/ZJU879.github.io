@@ -179,7 +179,7 @@ int main(int argc, char ** argv){
                 }
           }
       }
-      if(dt=='2'){//872
+      if(dt=='2'|| dt=='4'){//872
         if(get4ble(buf)){
             //Get device ID
             printf("Data from 872 bluetooth device\n");
@@ -189,11 +189,11 @@ int main(int argc, char ** argv){
             printf("%s\n",buf);
             //Send data to the server
 	    if(dt=='2')
-	        if(!send2server(device_id,res)){
+	        if(send2server(device_id,res)==-1){
                     printf("Failed to send to server!\n");
             	}
   	    else
-                if(!binary_send(device_id,0,res)){
+                if(binary_send(device_id,0,res)==-1){
                     printf("Failed to send to server!\n");
                 }
         }
