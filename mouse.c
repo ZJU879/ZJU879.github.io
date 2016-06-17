@@ -222,7 +222,9 @@ int send_packet(packet* p)
 
     _print_head(p);
     _print_payload(p);
+    printf("Test\n!Test\n!Test\n!Test\n!Test\n!");
     send(sockfd, buffer, p->content_length + 1, 0);
+    printf("Send");
     //TODO: Error detection
     dbg_print("%d byte has been sent.\n", p->content_length + 1);
 
