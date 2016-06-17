@@ -104,6 +104,12 @@ void *listener(void *tmp){
           send2ble(recv_json);
       }
     }
+    while(dt=='4'){
+      if(binary_recv(device_id,control_id,recv_json)!=-1){
+          //do something
+          send2ble(recv_json);
+      }
+    }
 }
 
 void *thread_4ble(void *tmp){
@@ -158,7 +164,7 @@ int main(int argc, char ** argv){
     printf("Create thread sucessfully\n");
     while(1){
         //Deal with the blueteeth data recieve
-      if(dt=='1'){//875
+      if(dt=='1' || dt=='3'){//875
         if(get4ble(buf)){
             //Get device ID
             printf("Data from 875 bluetooth device\n");
@@ -168,7 +174,10 @@ int main(int argc, char ** argv){
             ble_1_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-            send2server(device_id,report_id,res);
+            if(dt=='1')
+		send2server(device_id,report_id,res);
+	    else
+		binary_send(device_id,report_id,res);
         }
       }
       if(dt=='2'){//872
@@ -181,9 +190,14 @@ int main(int argc, char ** argv){
             ble_2_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-            if(!send2server(device_id,report_id,res)){
-                printf("Failed to send to server!\n");
-            }
+	    if(dt=='2')
+	        if(!send2server(device_id,report_id,res)){
+                    printf("Failed to send to server!\n");
+            	}
+  	    else
+                if(!binary_send(device_id,report_id,res)){
+                    printf("Failed to send to server!\n");
+                }
         }
         //Deal with the HTTP data recieve
         if(flag_rec){
