@@ -1,6 +1,6 @@
 #include "plc.h"
 
-#define PLC_STRLEN 12
+#define PLC_STRLEN 9
 //The BLE device
 int ble_fd = 0;
 
@@ -67,14 +67,14 @@ int ble_read(int ble_fd){
     while(flag||nRet!=0)
     {
         nRet = read(ble_fd, tmp, 1);
-        if(tmp[0]>='a'||tmp[0]<='z')
+        if(tmp[0]>='a'&&tmp[0]<='z')
             nRet=1;
-        else if(tmp[0]>='0'||tmp[0]<='9')
+        else if(tmp[0]>='0'&&tmp[0]<='9')
             nRet=1;
-        else if(tmp[0]>='A'||tmp[0]<='Z')
+        else if(tmp[0]>='A'&&tmp[0]<='Z')
             nRet=1;
-        else if(tmp[0]==' ')
-            nRet=1;
+        //else if(tmp[0]==' ')
+          //  nRet=1;
         else
             continue;
         str[len]=tmp[0];

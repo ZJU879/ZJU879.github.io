@@ -1,6 +1,8 @@
 #include "flagdef.h"
 #include "http2.h"
 #include "ble.h"
+#include "binary.h"
+#include "mouse.h"
 #define D_ID_875 28
 #define D_ID_872 4
 
@@ -100,6 +102,12 @@ void *listener(void *tmp){
           send2ble(recv_json);
       }
     }
+    while(dt=='4'){
+      if(binary_recv(device_id,0,recv_json)!=-1){
+          //do something
+          send2ble(recv_json);
+      }
+    }
 }
 
 
@@ -110,9 +118,9 @@ void *thread_4ble(void *tmp){
         return;
     }*/
     while(1){
-      if(dt=='1')
+      if(dt=='1' || dt=='3')
         ble_read_872(ble_fd);
-      else if(dt=='2')
+      else if(dt=='2' || dt=='4')
         ble_read_872(ble_fd);
     }
     return;
@@ -128,12 +136,12 @@ void *thread_2ble(void *tmp){
 //主程序
 int main(int argc, char ** argv){
     //Controller Data Structure 控制器数据结构
-    if(argc!=2&&argv[1][0]!='1'&&argv[1][0]!='2'){
+    if(argc!=2||argv[1][0]!='1'&&argv[1][0]!='2'&&argv[1][0]!='3'&&argv[1][0]!='4'){
         printf("Invalid input!\n");
         return 0;
     }
+    binary_init();
     dt = argv[1][0];
-    char* server = "IP";
     pthread_t th_listen,th_2ble, th_4ble, th_plc;
     char buf[DEV_SIZE];
     char res[5][20];
@@ -152,7 +160,7 @@ int main(int argc, char ** argv){
     printf("Create thread sucessfully\n");
     while(1){
         //Deal with the blueteeth data recieve
-      if(dt=='1'){//875
+      if(dt=='1' || dt=='3'){//875
         if(get4ble(buf)){
             //Get device ID
             printf("Data from 875 bluetooth device\n");
@@ -161,12 +169,17 @@ int main(int argc, char ** argv){
             ble_1_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-            if(!send2server(device_id,res)){
-                printf("Failed to send to server!\n");
-            }
-        }
+	         if(dt=='1')
+	            if(!send2server(device_id,res)){
+                    printf("Failed to send to server!\n");
+            	}
+  	      else
+                if(!binary_send(device_id,0,res)){
+                    printf("Failed to send to server!\n");
+                }
+          }
       }
-      if(dt=='2'){//872
+      if(dt=='2'|| dt=='4'){//872
         if(get4ble(buf)){
             //Get device ID
             printf("Data from 872 bluetooth device\n");
@@ -175,13 +188,22 @@ int main(int argc, char ** argv){
             ble_2_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-            if(!send2server(device_id,res)){
-                printf("Failed to send to server!\n");
+	          if(dt=='2'){
+               printf("\n\nsend by http\n\n");
+	             if(send2server(device_id,res)==-1){
+                    printf("Failed to send to server!\n");
+            	 }
             }
-        }
+  	        else{
+               printf("\n\nsend by bin\n\n");
+                if(binary_send(device_id,0,res)==-1){
+                    printf("Failed to send to server!\n");
+                }
+           }
+      }
+    }
         //Deal with the HTTP data recieve
         if(flag_rec){
         }
       }
-    }
 }

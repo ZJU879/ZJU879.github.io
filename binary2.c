@@ -32,15 +32,15 @@ packet* pack_report1(packet* p, void* data)
     packet_put_buffer(p, dataptr->time, 8);
     packet_put_buffer(p, dataptr->result,1);
     return p;
-} 
+}
 // Report Sample  for air conditioner
 typedef struct reportData2 {
     int device_id;
     int report_id;
     float humidity;
     float temperature;
-    int state;
-  
+    unsigned char* state;
+
 } reportData2;
 packet* pack_report2(packet* p, void* data)
 {
@@ -50,9 +50,9 @@ packet* pack_report2(packet* p, void* data)
 
     packet_put_float(p, dataptr->humidity);
     packet_put_float(p, dataptr->temperature);
-    packet_put_int(p, dataptr->state);
+    packet_put_buffer(p, dataptr->state,1);
     return p;
-} 
+}
 typedef struct reportData3 {
     int device_id;
     int report_id;
@@ -60,7 +60,7 @@ typedef struct reportData3 {
     unsigned char*  voice;
     unsigned char*  body;
     unsigned char* light;
-  
+
 } reportData3;
 packet* pack_report3(packet* p, void* data)
 {
@@ -73,10 +73,10 @@ packet* pack_report3(packet* p, void* data)
     packet_put_buffer(p, dataptr->body, 1);
     packet_put_buffer(p, dataptr->light,1);
     return p;
-} 
+}
 /*typedef struct controlRecvData {
     int start;
-   
+
 } controRecvlData;
 
  //Send control Sample
@@ -85,7 +85,7 @@ typedef struct controlSendData {
     int control_id;
     int target_id;
     int start;
-   
+
 } controlSendData;
 packet* pack_control_send(packet* p, void* data)
 {
@@ -105,7 +105,7 @@ int binary_init(){
     int res4=mouse_login(44, KEY_FOR_LOGIN44);
     if (res1||res2||res3||res4==0){
 	return 0;
-    } 
+    }
     else return -1;
 }
 int binary_send(int device_id,int report_id,char data[][20]){
@@ -114,11 +114,11 @@ int binary_send(int device_id,int report_id,char data[][20]){
 	mouse_report(pack_report1, (void*)&data1);
     }
     else if(device_id==4){//air
-	
+
 	float humi=(float)atof(data[0]);
 	float temp=atof(data[1]);
-	int state=atoi(data[2]);
-	reportData2 data2 = {device_id, report_id, humi, temp, state};
+	//int state=atoi(data[2]);
+	reportData2 data2 = {device_id, report_id, humi, temp, data[2]};
 	mouse_report(pack_report2, (void*)&data2);
     }
     else if(device_id==44){
@@ -135,8 +135,8 @@ int binary_recv(int device_id,int control_id,char *recv){
     pptr=recv_packet();//mouse_control_recv(device_id, control_id);
     if(pptr==NULL)return -1;
     else{
-	
-	sprintf(recv,"{1}");
+	sprintf(recv,"{%c}",pptr->payload[4]);
+	//sprintf(recv,"{1}");
 	packet_free(pptr);
 	return 0;
     }
@@ -151,26 +151,27 @@ int binary_exit(){
     printf("---Logout end---\n\n");
     return 0;
 }
+
 int main()
 {
     printf("hello!\n");
 
-  /* packet* p =packet_allocate();;
+   packet* p =packet_allocate();;
     packet_put_int(p, 3);
 	//int a=pptr->payload[0];
-	printf("recv:%2X\n",p->payload[0]);*/
+	printf("recv:%2X\n",p->payload[0]);
    if (binary_init() == 0)
     {
-	
+
 	char ret_msg[30];
 	char data[5][20];
 	sprintf(data[0],"3.42");//temperature
 	sprintf(data[1],"3.42");//humidity
 	sprintf(data[2],"7");
 	binary_send(4,21,data);
-	
 
-	 
+
+
 	//test for face detection  device id 15	 report id 7
 	sprintf(data[0],"3");
 	sprintf(data[1],"3842");
@@ -183,16 +184,17 @@ int main()
 	sprintf(data[1],"2");
 	sprintf(data[2],"3");
 	sprintf(data[3],"4");
-	binary_send(27,24,data);
-
-	 if(binary_recv(44,6,ret_msg)==0)
+	binary_send(44,24,data);
+	int i;
+	for(i=0;i<5;i++){
+	 if(binary_recv(4,6,ret_msg)==0)
 	 printf("recv mesg:%s",ret_msg);
 	else
 	  printf("no message return!\n");
-
+	}
         binary_exit();
     }
-	
-	
+
+
     return 0;
 }

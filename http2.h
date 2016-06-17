@@ -12,7 +12,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <ctype.h>
-
+void plc_debug();
 int Send_init(char* host_addr,int host_port);
 int report_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,char senddata[][20]);
 int control_packet(int *psocket_id,char* host_addr,char* host_file,int host_port,int device_id,char *recv_json);
