@@ -1,12 +1,15 @@
 #include "flagdef.h"
-#include "http2.h"
-#include "ble.h"
+#include "http.h"
+#include "plc.h"
 #include "binary.h"
 #include "mouse.h"
-#define D_ID_875 28
-#define D_ID_872 4
-
+#define D_ID_875 15
+#define R_ID_875 23
+#define D_ID_872 23
+#define R_ID_872 21
+#define C_ID_872 6
 #define D_ID_plc 27
+#define R_ID_xxx 7
 
 //PLC
 //int flag_plc;                        //for controller to check
@@ -45,16 +48,16 @@ void ble_1_parse(char res[][20], char* src){
 
 //     air condition
 void ble_2_parse(char res[][20], char* src){
-    res[0][0] = src[1];
-    res[0][1] = src[2];
-    res[0][2] = src[3];
-    res[0][3] = src[4];
-    res[0][4] = src[5]; res[0][5] = 0;
-    res[1][0] = src[6];
-    res[1][1] = src[7];
-    res[1][2] = src[8];
-    res[1][3] = src[9];
-    res[1][4] = src[10]; res[1][5] = 0;
+    res[1][0] = src[1];
+    res[1][1] = src[2];
+    res[1][2] = src[3];
+    res[1][3] = src[4];
+    res[1][4] = src[5]; res[1][5] = 0;
+    res[0][0] = src[6];
+    res[0][1] = src[7];
+    res[0][2] = src[8];
+    res[0][3] = src[9];
+    res[0][4] = src[10]; res[0][5] = 0;
     res[2][0] = src[9];  res[2][1] = 0;
 }
 
@@ -95,21 +98,21 @@ int getDevID(char *buf, int device_type){
 void *listener(void *tmp){
     char recv_json[1024];
     int device_id = D_ID_872;
+    int control_id = C_ID_872;
     //char* cu = "http://fat.fatmou.se/api/control";
     while(dt=='2'){
-      if(receive4server(device_id,recv_json)!=-1){
+      if(receive4server(device_id,control_id,recv_json)!=-1){
           //do something
           send2ble(recv_json);
       }
     }
     while(dt=='4'){
-      if(binary_recv(device_id,0,recv_json)!=-1){
+      if(binary_recv(device_id,control_id,recv_json)!=-1){
           //do something
           send2ble(recv_json);
       }
     }
 }
-
 
 void *thread_4ble(void *tmp){
     /*ble_fd = BLE_init();
@@ -136,19 +139,22 @@ void *thread_2ble(void *tmp){
 //主程序
 int main(int argc, char ** argv){
     //Controller Data Structure 控制器数据结构
-    if(argc!=2||argv[1][0]!='1'&&argv[1][0]!='2'&&argv[1][0]!='3'&&argv[1][0]!='4'){
+    if(argc!=2||argv[1][0]!='1'&&argv[1][0]!='2'&&argv[1][0]!='3'&&argv[1][0]!='4'&&argv[1][0]!='5'){
         printf("Invalid input!\n");
         return 0;
     }
     binary_init();
     dt = argv[1][0];
-    pthread_t th_listen,th_2ble, th_4ble, th_plc;
+    pthread_t th_listen,th_4ble,th_2ble,th_plc;
     char buf[DEV_SIZE];
     char res[5][20];
-    int device_id;
+    int device_id, report_id;
     int device_type;
     //BLE_init();
     printf("%d",BLE_init());
+    //PLC_init();
+    printf("Begin the program\n");
+    ble_fd = BLE_init();
     if( ble_fd == -1 ){
         perror("SerialInit Error!\n");
         return;
@@ -166,18 +172,15 @@ int main(int argc, char ** argv){
             printf("Data from 875 bluetooth device\n");
             //875 face detection
             device_id = D_ID_875;
+            report_id = R_ID_875;
             ble_1_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
-	         if(dt=='1')
-	            if(!send2server(device_id,res)){
-                    printf("Failed to send to server!\n");
-            	}
-  	      else
-                if(!binary_send(device_id,0,res)){
-                    printf("Failed to send to server!\n");
-                }
-          }
+            if(dt=='1')
+		send2server(device_id,report_id,res);
+	    else
+		binary_send(device_id,report_id,res);
+        }
       }
       if(dt=='2'|| dt=='4'){//872
         if(get4ble(buf)){
@@ -185,25 +188,26 @@ int main(int argc, char ** argv){
             printf("Data from 872 bluetooth device\n");
             //875 face detection
             device_id = D_ID_872;
+            report_id = R_ID_872;
             ble_2_parse(res,buf);
             printf("%s\n",buf);
             //Send data to the server
 	          if(dt=='2'){
                printf("\n\nsend by http\n\n");
-	             if(send2server(device_id,res)==-1){
+	             if(send2server(device_id,report_id,res)==-1){
                     printf("Failed to send to server!\n");
             	 }
             }
   	        else{
                printf("\n\nsend by bin\n\n");
-                if(binary_send(device_id,0,res)==-1){
+                if(binary_send(device_id,report_id,res)==-1){
                     printf("Failed to send to server!\n");
                 }
            }
+        }
       }
-    }
         //Deal with the HTTP data recieve
         if(flag_rec){
         }
-      }
+    }
 }
