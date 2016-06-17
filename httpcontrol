@@ -1,0 +1,185 @@
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 05:46:46 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+b
+{"code":-1}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 06:01:32 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 06:01:43 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 06:10:23 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 06:10:25 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Wed, 15 Jun 2016 06:10:37 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=75E4E1A61042789000B85D4B81AD9665; Path=/; HttpOnly
+Content-Length: 157
+Date: Wed, 15 Jun 2016 06:12:26 GMT
+Connection: close
+
+{"code":0,"id":136,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-15T14:01:29.329Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1465970489329}HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=B2ACDA146B54E54085FDF3A4D1466647; Path=/; HttpOnly
+Content-Length: 157
+Date: Wed, 15 Jun 2016 06:12:36 GMT
+Connection: close
+
+{"code":0,"id":139,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-15T14:12:36.746Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1465971156746}HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=8139B10217160961F0807204E2C8C0AB; Path=/; HttpOnly
+Content-Length: 157
+Date: Wed, 15 Jun 2016 06:12:38 GMT
+Connection: close
+
+{"code":0,"id":141,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-15T14:12:39.787Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1465971159787}HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=C679F61397ABAB4D9E604B8FCD6702DB; Path=/; HttpOnly
+Content-Length: 157
+Date: Wed, 15 Jun 2016 06:12:42 GMT
+Connection: close
+
+{"code":0,"id":143,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-15T14:12:42.101Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1465971162101}HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:48 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:18:56 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:19:00 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:19:04 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:19:10 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=EEF233676DEF3C0DADEA19C6777108DC; Path=/; HttpOnly
+Content-Length: 157
+Date: Thu, 16 Jun 2016 13:20:38 GMT
+Connection: close
+
+{"code":0,"id":182,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-16T21:20:38.537Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1466083238537}HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=BFA71D5144A4BBE02CF95689B94C28EA; Path=/; HttpOnly
+Content-Length: 157
+Date: Thu, 16 Jun 2016 13:20:40 GMT
+Connection: close
+
+{"code":0,"id":183,"defId":6,"authId":23,"deviceId":23,"time":"2016-06-16T21:20:40.106Z","payload":{"start":"1"},"targetId":23,"sr":"S","date":1466083240106}HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:21:44 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
+HTTP/1.1 200 OK
+Server: openresty/1.9.7.4
+Date: Thu, 16 Jun 2016 13:21:45 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close
+
+1f
+{"code":0,"data":{"start":"1"}}
+0
+
