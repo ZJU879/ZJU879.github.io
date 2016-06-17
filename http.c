@@ -234,7 +234,7 @@ int parsejson(char *json,char *ret_msg){
 	return res;//0 have message; -1 no message
 }
 
-
+/*
 int main(int argc, char *argv[]){
 
 
@@ -265,7 +265,7 @@ int main(int argc, char *argv[]){
 	sprintf(data[3],"4");
 	send2server(27,24,data);
 	return 0;
-}
+}*/
 /**************************************************************
 功能：从字符串src中分析出网站地址和端口，并得到用户要下载的文件
 ***************************************************************/

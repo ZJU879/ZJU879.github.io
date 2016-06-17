@@ -749,3 +749,35 @@ Date: Thu, 16 Jun 2016 14:04:29 GMT
 Connection: close
 
 {"code":0}
+HTTP/1.1 400 Bad Request
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=F554C37EDB0AC05D89F45B08F260D271; Path=/; HttpOnly
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Fri, 17 Jun 2016 06:11:44 GMT
+Connection: close
+
+64
+{"timestamp":1466143904114,"status":400,"error":"Bad Request","message":"null","path":"/api/report"}
+0
+
+HTTP/1.1 400 Bad Request
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=0C8815FE93835758336DF311EC0028B8; Path=/; HttpOnly
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Fri, 17 Jun 2016 06:13:25 GMT
+Connection: close
+
+64
+{"timestamp":1466144005185,"status":400,"error":"Bad Request","message":"null","path":"/api/report"}
+0
+
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=13DD651723BFA75607FB476F0335A2EA; Path=/; HttpOnly
+Content-Length: 11
+Date: Fri, 17 Jun 2016 06:21:19 GMT
+Connection: close
+
+{"code":0}
